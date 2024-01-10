@@ -2,11 +2,11 @@
 <html lang="it">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>progDB</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>progDB</title>
 
-    <script src="https://cdn.tailwindcss.com"></script>
+	<script src="https://cdn.tailwindcss.com"></script>
 </head>
 
 <script>
@@ -15,21 +15,122 @@
 </script>
 
 <body>
-    <main class="flex flex-col justify-center">
-        <h1 class="mx-auto my-8 text-5xl font-bold text-teal-500">RiverFlix</h1>
+	<main class="flex flex-col justify-center">
+		<h1 class="mx-auto my-8 text-5xl font-bold text-teal-500">RiverFlix</h1>
 
-        <h2 class="mx-auto my-4 text-2xl font-semibold">Operazioni sul DB:</h2>
+		<h2 class="mx-auto my-4 text-2xl font-semibold">Operazioni sul DB:</h2>
 
-        <ol class="list-decimal">
-            <li class="p-2 m-2">
-                <h3 class="mx-auto my-2 text-xl">Inserimento prodotto</h3>
+		<ol class="list-decimal mx-8">
+			<li class="p-2 m-2">
+				<h3 class="mx-auto my-2 text-xl">Inserimento prodotto</h3>
+				<pre class="my-2">	Query:
+	INSERT INTO ProdCinema (Id, Rating, Durata, Budget, Anno,
+	Titolo, CARA, Scadenza, Tipo, Stagione, SerieTV)
+	VALUES (...)
+
+	INSERT INTO Creazione()
+	VALUES (‘idEpisodio’ , ‘codicePersona’)
+	
+	INSERT INTO Parte()
+	VALUES (‘idEpisodio’ , ...)
+
+	INSERT INTO Categoria()
+	VALUES (‘idEpisodio’ , ‘categoria’)
+
+	INSERT INTO Ambientazione()
+	VALUES (‘idEpisodio’ , ‘location’)
+</pre>
+				<button class="py-1 px-2 m-2 border-2 rounded-md">esegui</button>
+			</li>
+
+			<li class="p-2 m-2">
+				<h3 class="mx-auto my-2 text-xl">Rimozione prodotto</h3>
+				<pre class="my-2">	Query:
+	DELETE FROM ProdCinema 
+	WHERE Scadenza &lt; CAST(GETDATE() AS Date)</pre>
+				<button class="py-1 px-2 m-2 border-2 rounded-md">esegui</button>
+			</li>
+
+			<li class="p-2 m-2">
+				<h3 class="mx-auto my-2 text-xl">Aggiornamento prodotto</h3>
+				<pre class="my-2">	Query:
+	UPDATE ProdCinema ()
+	SET ...
+	WHERE Id = ...</pre>
+				<button class="py-1 px-2 m-2 border-2 rounded-md">esegui</button>
+			</li>
+
+			<li class="p-2 m-2">
+				<h3 class="mx-auto my-2 text-xl">Aggiornamento rating</h3>
+				<pre class="my-2">	Query:
+	UPDATE ProdCinema
+	SET Rating = t.meanR
+	FROM (
+		SELECT ProdCinema, AVG(ProdCinema) as meanR
+		FROM Recensione 
+		GROUP BY ProdCinema
+	) t
+	WHERE Id = t.ProdCinema</pre>
+				<button class="py-1 px-2 m-2 border-2 rounded-md">esegui</button>
+			</li>
+
+			<li class="p-2 m-2">
+				<h3 class="mx-auto my-2 text-xl">Inserimento account</h3>
+				<pre class="my-2">	Query:
+	INSERT INTO Account (Mail, Psw, Abbonamento, DataCreaz)
+	VALUES (...)</pre>
+				<button class="py-1 px-2 m-2 border-2 rounded-md">esegui</button>
+			</li>
+			
+			<li class="p-2 m-2">
+				<h3 class="mx-auto my-2 text-xl">Cambio abbonamento</h3>
+				<pre class="my-2">	Query:
+	UPDATE Account
+	SET Abbonamento = ''...''
+	WHERE Mail = ''...'</pre>
+				<button class="py-1 px-2 m-2 border-2 rounded-md">esegui</button>
+			</li>
+
+			<li class="p-2 m-2">
+				<h3 class="mx-auto my-2 text-xl">Rimozione account</h3>
+				<pre class="my-2">	Query:
+	DELETE FROM Account
+	WHERE Mail = ''...'</pre>
+				<button class="py-1 px-2 m-2 border-2 rounded-md">esegui</button>
+			</li>
+			<li class="p-2 m-2">
+				<h3 class="mx-auto my-2 text-xl">Inserimento account</h3>
+				<pre class="my-2">	Query:
+	INSERT INTO Account (Mail, Psw, Abbonamento, DataCreaz)
+	VALUES (...)</pre>
+				<button class="py-1 px-2 m-2 border-2 rounded-md">esegui</button>
+			</li>
+			<li class="p-2 m-2">
+				<h3 class="mx-auto my-2 text-xl">Inserimento account</h3>
+				<pre class="my-2">	Query:
+	INSERT INTO Account (Mail, Psw, Abbonamento, DataCreaz)
+	VALUES (...)</pre>
+				<button class="py-1 px-2 m-2 border-2 rounded-md">esegui</button>
+			</li>
+			<li class="p-2 m-2">
+				<h3 class="mx-auto my-2 text-xl">Inserimento account</h3>
+				<pre class="my-2">	Query:
+	INSERT INTO Account (Mail, Psw, Abbonamento, DataCreaz)
+	VALUES (...)</pre>
+				<button class="py-1 px-2 m-2 border-2 rounded-md">esegui</button>
+			</li>
+			<li class="p-2 m-2">
+				<h3 class="mx-auto my-2 text-xl">Inserimento account</h3>
+				<pre class="my-2">	Query:
+	INSERT INTO Account (Mail, Psw, Abbonamento, DataCreaz)
+	VALUES (...)</pre>
+				<button class="py-1 px-2 m-2 border-2 rounded-md">esegui</button>
+			</li>
+
+		</ol>
+	</main>
 
 
-            </li>
-        </ol>
-    </main>
-
-    
 </body>
 
 </html>
