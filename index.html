@@ -9,13 +9,192 @@
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
+<script>
+    'CREATE DATABASE nome
+
+CREATE TABLE SerieTV(
+	Id MEDIUMINT UNSIGNED not NULL AUTO_INCREMENT,
+	Titolo VARCHAR(30)not NULL,
+	NStagioni SMALLINT not NULL,
+	PRIMARY KEY (Id)
+)
+
+CREATE TABLE ProdCinema{
+	Id MEDIUMINT UNSIGNED not NULL AUTO_INCREMENT,
+	Rating SMALLINT,
+	Durata MEDIUMINT not NULL,
+	Budget INT not null,
+	Anno YEAR(4),
+	Titolo VARCHAR(30) not NULL,
+	Cara ENUM(‘G’,’PG’,’PG-13’,’R’,’NC-17’),
+	Scadenza DATE not NULL,
+	Tipo ENUM(‘serie_tv’,’film’),
+Stagione SMALLINT, 
+Serietv MEDIUMINT UNSIGNED,
+
+PRIMARY KEY (Id)
+
+FOREIGN KEY (Serietv)
+	REFERENCES SerieTV(Id)
+
+CHECK(Rating >= 0 AND Rating <= 10)
+}
+
+CREATE TABLE Personale{
+	Codice CHAR(16) not NULL,
+	Nome VARCHAR(20) not NULL,
+	DataNasc DATE,
+	Nazionalità VARCHAR(30),
+	Compito VARCHAR(20),
+
+	PRIMARY KEY(Codice)
+}
+
+CREATE TABLE Account{
+	Mail VARCHAR(40) not NULL,
+	Password VARCHAR(100) not NULL,
+	Abbonamento ENUM(‘mensile’, ‘semestrale’, ‘annuale’, ‘annuale PRO’) not NULL,
+	DataCreaz DATE not NULL
+
+	PRIMARY KEY (Mail)
+	CHECK(Mail REGEXP “^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$”)
+}
+
+CREATE TABLE Utente{
+	Nome VARCHAR(20) not NULL,
+	Account VARCHAR(40) not NULL,
+	Età SMALLINT,
+	Posizione VARCHAR(100)
+	Ling VARCHAR(30),
+	Dispositivo VARCHAR(20)
+TempoUtilizzo MEDIUM INT UNSIGNED	
+
+PRIMARY KEY(Nome, Account)
+
+FOREIGN KEY (Account)
+	REFERENCES Account(Mail)
+}
+
+CREATE TABLE Ambientazione{
+	ProdCin MEDIUMINT UNSIGNED not NULL,
+	Location VARCHAR(30),
+
+	FOREIGN KEY (ProdCin)
+		REFERENCES ProdCinema(Id)
+}
+
+CREATE TABLE Categoria{
+	ProdCin MEDIUMINT UNSIGNED not NULL,
+	Genere VARCHAR(30),
+
+	FOREIGN KEY (ProdCin)
+		REFERENCES ProdCinema(Id)
+}
+
+CREATE TABLE Creazione{
+	ProdCin MEDIUMINT UNSIGNED not NULL,
+	personale CHAR(16) not NULL,
+
+	FOREIGN KEY (ProdCin)
+		REFERENCES ProdCinema(Id)
+	FOREIGN KEY (Personale)
+		REFERENCES Personale(Codice)
+}
+
+CREATE TABLE Parte{
+	ProdCinema MEDIUMINT UNSIGNED not NULL,
+Attore CHAR(16) not NULL,
+Ruolo VARCHAR(20) not NULL,
+
+PRIMARY KEY (ProdCinema , Attore, Ruolo)
+	
+FOREIGN KEY (ProdCinema)
+REFERENCES ProdCinema(Id)
+FOREIGN KEY (Attore)
+	REFERENCES Personale(Codice)	
+}
+
+CREATE TABLE Recensione{
+	Utente VARCHAR(20) not NULL,
+	Account VARCHAR(40) not NULL,
+ProdCinema MEDIUMINT UNSIGNED not NULL,
+Gradimento SMALLINT not NULL,
+
+	PRIMARY KEY (Utente, Account, ProdCinema )
+
+	FOREIGN KEY (Utente)
+		REFERENCES Utente(Nome)
+FOREIGN KEY (Account)
+	REFERENCES Account(Mail)
+FOREIGN KEY (ProdCinema)
+		REFERENCES ProdCinema(Id)
+
+	CHECK(Grandimento <= 10 AND Grandimento >= 0)
+}
+
+CREATE TABLE Visione{
+	Utente VARCHAR(20) not NULL,
+	Account VARCHAR(40) not NULL,
+ProdCinema MEDIUMINT UNSIGNED not NULL,
+Watchtime INT UNSIGNED not NULL,
+Data DATE not NULL
+
+	PRIMARY KEY (Utente, Account, ProdCinema )
+
+	FOREIGN KEY (Utente)
+		REFERENCES Utente(Nome)
+FOREIGN KEY (Account)
+	REFERENCES Account(Mail)
+FOREIGN KEY (ProdCinema )
+		REFERENCES ProdCinema(Id)
+}
+
+CREATE TABLE InVisione{
+	Utente VARCHAR(20) not NULL,
+	Account VARCHAR(40) not NULL,
+ProdCinema MEDIUMINT UNSIGNED not NULL,
+Tempo INT UNSIGNED not NULL,
+
+	PRIMARY KEY (Utente, Account, ProdCinema )
+
+	FOREIGN KEY (Utente)
+		REFERENCES Utente(Nome)
+FOREIGN KEY (account)
+	REFERENCES Account(Mail)
+FOREIGN KEY (ProdCinema )
+		REFERENCES ProdCinema(Id)
+   }
+
+CREATE TABLE DaVedere{
+	Utente VARCHAR(20) not NULL,
+	Account VARCHAR(40) not NULL,
+ProdCinema MEDIUMINT UNSIGNED not NULL,
+
+	PRIMARY KEY (Utente, Account, ProdCinema )
+
+	FOREIGN KEY (Utente)
+		REFERENCES Utente(Nome)
+FOREIGN KEY (Account)
+	REFERENCES Account(Mail)
+FOREIGN KEY (ProdCinema )
+		REFERENCES ProdCinema(Id)
+}
+'
+</script>
+
 <body>
     <main class="flex flex-col justify-center">
         <h1 class="mx-auto my-8 text-5xl font-bold text-teal-500">RiverFlix</h1>
 
-        <h2 class="mx-auto my-8 text-2xl font-semibold">Operazioni sul DB:</h2>
+        <h2 class="mx-auto my-4 text-2xl font-semibold">Operazioni sul DB:</h2>
 
-        <h3 class=""></h3>
+        <ol class="list-decimal">
+            <li class="p-2 m-2">
+                <h3 class="mx-auto my-2 text-xl">Inserimento prodotto</h3>
+
+
+            </li>
+        </ol>
     </main>
 
     
