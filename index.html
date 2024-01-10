@@ -13,6 +13,48 @@
 	function createDB() {
 		const res = fetch('http://localhost:8000/createDB/riverflex');
 	}
+	function submit1() {
+		const res = fetch('http://localhost:8000/op/1');
+	}
+	function submit2() {
+		const res = fetch('http://localhost:8000/op/2');
+	}
+	function submit3() {
+		const res = fetch('http://localhost:8000/op/3');
+	}
+	function submit4() {
+		const res = fetch('http://localhost:8000/op/4');
+	}
+	function submit5() {
+		const res = fetch('http://localhost:8000/op/5');
+	}
+	function submit6() {
+		const res = fetch('http://localhost:8000/op/6');
+	}
+	function submit7() {
+		const res = fetch('http://localhost:8000/op/7');
+	}
+	function submit8() {
+		const res = fetch('http://localhost:8000/op/8');
+	}
+	function submit9() {
+		const res = fetch('http://localhost:8000/op/9');
+	}
+	function submit10() {
+		const res = fetch('http://localhost:8000/op/10');
+	}
+	function submit11() {
+		const res = fetch('http://localhost:8000/op/11');
+	}
+	function submit12() {
+		const res = fetch('http://localhost:8000/op/12');
+	}
+	function submit13() {
+		const res = fetch('http://localhost:8000/op/13');
+	}
+	function submit14() {
+		const res = fetch('http://localhost:8000/op/14');
+	}
 </script>
 
 <body>
@@ -50,7 +92,7 @@
 	INSERT INTO Ambientazione()
 	VALUES ('idEpisodio' , 'location')
 </pre>
-				<button class="py-1 px-2 m-2 border-2 rounded-md">esegui</button>
+				<button class="py-1 px-2 m-2 border-2 rounded-md" onclick="submit1()">esegui</button>
 			</li>
 
 			<li class="p-2 m-2">
@@ -58,7 +100,7 @@
 				<pre class="my-2">	Query:
 	DELETE FROM ProdCinema 
 	WHERE Scadenza &lt; CAST(GETDATE() AS Date)</pre>
-				<button class="py-1 px-2 m-2 border-2 rounded-md">esegui</button>
+				<button class="py-1 px-2 m-2 border-2 rounded-md" onclick="submit2()">esegui</button>
 			</li>
 
 			<li class="p-2 m-2">
@@ -67,7 +109,7 @@
 	UPDATE ProdCinema ()
 	SET ...
 	WHERE Id = ...</pre>
-				<button class="py-1 px-2 m-2 border-2 rounded-md">esegui</button>
+				<button class="py-1 px-2 m-2 border-2 rounded-md" onclick="submit3()">esegui</button>
 			</li>
 
 			<li class="p-2 m-2">
@@ -81,7 +123,7 @@
 		GROUP BY ProdCinema
 	) t
 	WHERE Id = t.ProdCinema</pre>
-				<button class="py-1 px-2 m-2 border-2 rounded-md">esegui</button>
+				<button class="py-1 px-2 m-2 border-2 rounded-md" onclick="submit4()">esegui</button>
 			</li>
 
 			<li class="p-2 m-2">
@@ -89,7 +131,7 @@
 				<pre class="my-2">	Query:
 	INSERT INTO Account (Mail, Psw, Abbonamento, DataCreaz)
 	VALUES (...)</pre>
-				<button class="py-1 px-2 m-2 border-2 rounded-md">esegui</button>
+				<button class="py-1 px-2 m-2 border-2 rounded-md" onclick="submit5()">esegui</button>
 			</li>
 			
 			<li class="p-2 m-2">
@@ -98,7 +140,7 @@
 	UPDATE Account
 	SET Abbonamento = ''...''
 	WHERE Mail = ''...'</pre>
-				<button class="py-1 px-2 m-2 border-2 rounded-md">esegui</button>
+				<button class="py-1 px-2 m-2 border-2 rounded-md" onclick="submit6()">esegui</button>
 			</li>
 
 			<li class="p-2 m-2">
@@ -106,7 +148,7 @@
 				<pre class="my-2">	Query:
 	DELETE FROM Account
 	WHERE Mail = ''...'</pre>
-				<button class="py-1 px-2 m-2 border-2 rounded-md">esegui</button>
+				<button class="py-1 px-2 m-2 border-2 rounded-md" onclick="submit7()">esegui</button>
 			</li>
 			<li clas
 			s="p-2 m-2">
@@ -115,7 +157,7 @@
 	INSERT INTO Utente (Nome, Account, Età, Posizione, Ling,
 	Disp, TempoUtilizzo)
 	VALUES (...)</pre>
-				<button class="py-1 px-2 m-2 border-2 rounded-md">esegui</button>
+				<button class="py-1 px-2 m-2 border-2 rounded-md" onclick="submit8()">esegui</button>
 			</li>
 
 			<li class="p-2 m-2">
@@ -128,7 +170,7 @@
 	GROUP BY V.ProdCinema
 	ORDER BY COUNT(V.ProdCinema) DESC
 	LIMIT 10</pre>
-				<button class="py-1 px-2 m-2 border-2 rounded-md">esegui</button>
+				<button class="py-1 px-2 m-2 border-2 rounded-md" onclick="submit9()">esegui</button>
 			</li>
 
 			<li class="p-2 m-2">
@@ -146,7 +188,7 @@
 		LIMIT 1
 	) t ON P.Genere = t.FavGen
 	LIMIT 5</pre>
-				<button class="py-1 px-2 m-2 border-2 rounded-md">esegui</button>
+				<button class="py-1 px-2 m-2 border-2 rounded-md" onclick="submit10()">esegui</button>
 			</li>
 
 			<li class="p-2 m-2">
@@ -155,7 +197,7 @@
 	SELECT P.Id, P.Titolo, P.Tipo
 	FROM ProdCinema
 	WHERE</pre>
-				<button class="py-1 px-2 m-2 border-2 rounded-md">esegui</button>
+				<button class="py-1 px-2 m-2 border-2 rounded-md" onclick="submit11()">esegui</button>
 			</li>
 			
 			<li class="p-2 m-2">
@@ -163,7 +205,7 @@
 				<pre class="my-2">	Query:
 	INSERT INTO Visionato (Utente, Account, ProdCinema, Watchtime)
 	VALUES (...)</pre>
-				<button class="py-1 px-2 m-2 border-2 rounded-md">esegui</button>
+				<button class="py-1 px-2 m-2 border-2 rounded-md" onclick="submit12()">esegui</button>
 			</li>
 
 			<li class="p-2 m-2">
@@ -172,7 +214,7 @@
 	INSERT INTO Recensione (Utente, Account, ProdCinema,
 	Gradimento)
 	VALUES (...)</pre>
-				<button class="py-1 px-2 m-2 border-2 rounded-md">esegui</button>
+				<button class="py-1 px-2 m-2 border-2 rounded-md" onclick="submit13()">esegui</button>
 			</li>
 
 			<li class="p-2 m-2">
@@ -181,7 +223,7 @@
 	SELECT Rating, Durata, Budget, Anno, CARA, Stagione, SerieTV
 	FROM ProdCinema
 	WHERE ...</pre>
-				<button class="py-1 px-2 m-2 border-2 rounded-md">esegui</button>
+				<button class="py-1 px-2 m-2 border-2 rounded-md" onclick="submit14()">esegui</button>
 			</li>
 
 		</ol>
