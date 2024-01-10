@@ -4,11 +4,13 @@ const cors = require("cors");
 const {createConnection} = require("mysql2");
 
 const PORT = 10000;
+const SERIETV = 'serie_tv';
+const FILM = 'film';
 const CREATE_QUERIES = [
     `CREATE TABLE SerieTV(Id MEDIUMINT UNSIGNED not NULL AUTO_INCREMENT,Titolo VARCHAR(30) not NULL,NStagioni SMALLINT not NULL,PRIMARY KEY (Id))`,
-    `CREATE TABLE ProdCinema(Id MEDIUMINT UNSIGNED not NULL AUTO_INCREMENT, Rating SMALLINT, Durata MEDIUMINT not NULL, 
+    `CREATE TABLE ProdCinema(Id MEDIUMINT UNSIGNED not NULL AUTO_INCREMENT, Rating SMALLINT DEFAULT 0, Durata MEDIUMINT not NULL, 
         Budget INT not NULL, Anno YEAR(4), Titolo VARCHAR(30) not NULL, Cara ENUM('G','PG','PG-13','R','NC-17'), 
-        Scadenza DATE not NULL, Tipo ENUM('serie_tv','film') not NULL, Stagione SMALLINT,  Serietv MEDIUMINT UNSIGNED,
+        Scadenza DATE not NULL, Tipo ENUM('serie_tv','film') not NULL, Stagione SMALLINT,  Serietv MEDIUMINT UNSIGNED, NumEpisodio SMALLINT,
         PRIMARY KEY (Id), FOREIGN KEY (Serietv) REFERENCES SerieTV(Id), CHECK(Rating >= 0 AND Rating <= 10))`,
     `CREATE TABLE Personale(Codice CHAR(16) not NULL, Nome VARCHAR(20) not NULL, DataNasc DATE, Nazionalità VARCHAR(30), Compito VARCHAR(20), PRIMARY KEY(Codice))`,
     `CREATE TABLE Account(Mail VARCHAR(40) not NULL, Password VARCHAR(100) not NULL, Abbonamento ENUM('mensile', 'semestrale', 'annuale', 'annuale PRO') not NULL,
@@ -29,6 +31,43 @@ const CREATE_QUERIES = [
         FOREIGN KEY (Utente) REFERENCES Utente(Nome), FOREIGN KEY (account) REFERENCES Account(Mail), FOREIGN KEY (ProdCinema) REFERENCES ProdCinema(Id))`,
     `CREATE TABLE DaVedere(Utente VARCHAR(20) not NULL, Account VARCHAR(40) not NULL, ProdCinema MEDIUMINT UNSIGNED not NULL, PRIMARY KEY (Utente, Account, ProdCinema ),
         FOREIGN KEY (Utente) REFERENCES Utente(Nome), FOREIGN KEY (Account) REFERENCES Account(Mail),FOREIGN KEY (ProdCinema ) REFERENCES ProdCinema(Id))`
+]
+
+
+class ProdCinema {
+    durata_val
+    budget_val
+    anno_val
+    titolo_val
+    cara_val
+    scadenza_val
+    tipo_val
+    stagione_val
+    serie_val
+
+    constructor(durata, budget, anno, titolo, cara, scadenza, tipo, stagione, serie) {
+        this.durata_val = durata;
+        this.budget_val = budget;
+        this.anno_val = anno;
+        this.titolo_val = titolo;
+        this.cara_val = cara;
+        this.scadenza_val = scadenza;
+        this.tipo_val = tipo;
+        this.stagione_val = stagione;
+        this.serie_val = serie
+    }
+
+    setSerieTVid (id) {
+        this.serie_val = id;
+    }
+}
+
+const prodCin_test = [
+    new ProdCinema(10140, 165000000, 2013, 'Interstellar', CARA  , 'NULL', FILM, 'NULL', 'NULL'),
+    new ProdCinema(1320, 2000000 ,2005, 'Pilot', CARA , 'NULL',SERIETV, 1, null),
+    new ProdCinema(1320, 2000000 ,2005, 'Purple Giraffe', CARA , 'NULL',SERIETV, 1, null),
+    new ProdCinema(1320, 2000000 ,2005, 'Sweet Taste of Liberty', CARA , 'NULL',SERIETV, 1, null),
+
 ]
 
 //middleware
@@ -103,41 +142,17 @@ app.get("/table/:tablename", async (req, res) => {
 });
 
 app.post("/op/:opNum", async (req, res) => {
-  let connection = await connect.getConnection;
+  let connection = await connect.getConnection();
   const { opNum } = req.params;
 
   try {
     switch (opNum) {
       case "1":
-        const {
-          id_val,
-          rating_val,
-          durata_val,
-          budget_val,
-          anno_val,
-          titolo_val,
-          cara_val,
-          scadenza_val,
-          tipo_val,
-          stagione_val,
-          serie_val,
-        } = req.body;
+          const req_num = req.body.product_number;
+
         const query1_1 = await connection.query(
           `INSERT INTO ProdCinema(Id, Rating, Durata, Budget, Anno, Titolo, CARA, Scadenza, Tipo, Stagione, SerieTV) 
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) `,
-          [
-            id_val,
-            rating_val,
-            durata_val,
-            budget_val,
-            anno_val,
-            titolo_val,
-            cara_val,
-            scadenza_val,
-            tipo_val,
-            stagione_val,
-            serie_val,
-          ]
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) `, Object.values()
         );
         res.send(query1_1);
 
