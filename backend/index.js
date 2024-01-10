@@ -93,9 +93,6 @@ app.post('/createTables', async (req,res) => {
     }
 })
 
-app.listen(PORT, () => {
-    console.log(`app sulla porta ${PORT}`);
-})
 app.get("/table/:tablename", async (req, res) => {
   const { tablename } = req.params;
   try {
@@ -298,3 +295,8 @@ app.post("/op/:opNum", async (req, res) => {
     res.status(500).json({ error: "Errore durante l'esecuzione della query" });
   }
 });
+
+
+app.listen(PORT, () => {
+    console.log(`app sulla porta ${PORT}`);
+})
