@@ -2,34 +2,250 @@
 <html lang="it">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>progDB</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>progDB</title>
 
-    <script src="https://cdn.tailwindcss.com"></script>
+	<script src="https://cdn.tailwindcss.com"></script>
 </head>
 
 <script>
-	//crea il DB e le tabelle
-	const res = fetch('http://localhost:8000/createDB/riverflex');
+	function createDB() {
+		const res = fetch('http://localhost:8000/createDB/riverflex');
+	}
+	function submit1() {
+		const res = fetch('http://localhost:8000/op/1');
+	}
+	function submit2() {
+		const res = fetch('http://localhost:8000/op/2');
+	}
+	function submit3() {
+		const res = fetch('http://localhost:8000/op/3');
+	}
+	function submit4() {
+		const res = fetch('http://localhost:8000/op/4');
+	}
+	function submit5() {
+		const res = fetch('http://localhost:8000/op/5');
+	}
+	function submit6() {
+		const res = fetch('http://localhost:8000/op/6');
+	}
+	function submit7() {
+		const res = fetch('http://localhost:8000/op/7');
+	}
+	function submit8() {
+		const res = fetch('http://localhost:8000/op/8');
+	}
+	function submit9() {
+		const res = fetch('http://localhost:8000/op/9');
+	}
+	function submit10() {
+		const res = fetch('http://localhost:8000/op/10');
+	}
+	function submit11() {
+		const res = fetch('http://localhost:8000/op/11');
+	}
+	function submit12() {
+		const res = fetch('http://localhost:8000/op/12');
+	}
+	function submit13() {
+		const res = fetch('http://localhost:8000/op/13');
+	}
+	function submit14() {
+		const res = fetch('http://localhost:8000/op/14');
+	}
 </script>
 
 <body>
-    <main class="flex flex-col justify-center">
-        <h1 class="mx-auto my-8 text-5xl font-bold text-teal-500">RiverFlix</h1>
+	<main class="flex flex-col justify-center">
+		<h1 class="mx-auto my-8 text-5xl font-bold text-teal-500">RiverFlix</h1>
 
-        <h2 class="mx-auto my-4 text-2xl font-semibold">Operazioni sul DB:</h2>
+		<h2 class="mx-auto my-4 text-3xl font-semibold">Creazione del DB:</h2>
 
-        <ol class="list-decimal">
-            <li class="p-2 m-2">
-                <h3 class="mx-auto my-2 text-xl">Inserimento prodotto</h3>
+		<div class="p-2 m-2">
+				<h3 class="mx-auto my-2 font-semibold text-xl">Creazione DB e delle tabelle</h3>
+				<!-- <pre class="my-2"></pre> -->
+				<button id="creteDB" class="py-1 px-2 m-2 border-2 rounded-md" onclick="createDB()">esegui</button>
+		</div>
 
 
-            </li>
-        </ol>
-    </main>
+		<h2 class="mx-auto my-4 text-3xl font-semibold">Operazioni sul DB:</h2>
 
-    
+		<ol class="list-decimal mx-8">
+			<li class="p-2 m-2">
+				<h3 class="mx-auto my-2 font-semibold text-xl">Inserimento prodotto</h3>
+				<pre class="my-2">	Query:
+	INSERT INTO ProdCinema (Id, Rating, Durata, Budget, Anno,
+	Titolo, CARA, Scadenza, Tipo, Stagione, SerieTV)
+	VALUES (...)
+
+	INSERT INTO Creazione()
+	VALUES ('idEpisodio' , 'codicePersona')
+	
+	INSERT INTO Parte()
+	VALUES ('idEpisodio' , ...)
+
+	INSERT INTO Categoria()
+	VALUES ('idEpisodio' , 'categoria')
+
+	INSERT INTO Ambientazione()
+	VALUES ('idEpisodio' , 'location')
+</pre>
+				<button class="py-1 px-2 m-2 border-2 rounded-md" onclick="submit1()">esegui</button>
+			</li>
+
+			<li class="p-2 m-2">
+				<h3 class="mx-auto my-2 font-semibold text-xl">Rimozione prodotto</h3>
+				<pre class="my-2">	Query:
+	DELETE FROM ProdCinema 
+	WHERE Scadenza &lt; CAST(GETDATE() AS Date)</pre>
+				<button class="py-1 px-2 m-2 border-2 rounded-md" onclick="submit2()">esegui</button>
+			</li>
+
+			<li class="p-2 m-2">
+				<h3 class="mx-auto my-2 font-semibold text-xl">Aggiornamento prodotto</h3>
+				<pre class="my-2">	Query:
+	UPDATE ProdCinema ()
+	SET ...
+	WHERE Id = ...</pre>
+				<button class="py-1 px-2 m-2 border-2 rounded-md" onclick="submit3()">esegui</button>
+			</li>
+
+			<li class="p-2 m-2">
+				<h3 class="mx-auto my-2 font-semibold text-xl">Aggiornamento rating</h3>
+				<pre class="my-2">	Query:
+	UPDATE ProdCinema
+	SET Rating = t.meanR
+	FROM (
+		SELECT ProdCinema, AVG(ProdCinema) as meanR
+		FROM Recensione 
+		GROUP BY ProdCinema
+	) t
+	WHERE Id = t.ProdCinema</pre>
+				<button class="py-1 px-2 m-2 border-2 rounded-md" onclick="submit4()">esegui</button>
+			</li>
+
+			<li class="p-2 m-2">
+				<h3 class="mx-auto my-2 font-semibold text-xl">Inserimento account</h3>
+				<pre class="my-2">	Query:
+	INSERT INTO Account (Mail, Psw, Abbonamento, DataCreaz)
+	VALUES (...)</pre>
+				<button class="py-1 px-2 m-2 border-2 rounded-md" onclick="submit5()">esegui</button>
+			</li>
+			
+			<li class="p-2 m-2">
+				<h3 class="mx-auto my-2 font-semibold text-xl">Cambio abbonamento</h3>
+				<pre class="my-2">	Query:
+	UPDATE Account
+	SET Abbonamento = ''...''
+	WHERE Mail = ''...'</pre>
+				<button class="py-1 px-2 m-2 border-2 rounded-md" onclick="submit6()">esegui</button>
+			</li>
+
+			<li class="p-2 m-2">
+				<h3 class="mx-auto my-2 font-semibold text-xl">Rimozione account</h3>
+				<pre class="my-2">	Query:
+	DELETE FROM Account
+	WHERE Mail = ''...'</pre>
+				<button class="py-1 px-2 m-2 border-2 rounded-md" onclick="submit7()">esegui</button>
+			</li>
+			<li clas
+			s="p-2 m-2">
+				<h3 class="mx-auto my-2 font-semibold text-xl">Inserimento utente</h3>
+				<pre class="my-2">	Query:
+	INSERT INTO Utente (Nome, Account, Età, Posizione, Ling,
+	Disp, TempoUtilizzo)
+	VALUES (...)</pre>
+				<button class="py-1 px-2 m-2 border-2 rounded-md" onclick="submit8()">esegui</button>
+			</li>
+
+			<li class="p-2 m-2">
+				<h3 class="mx-auto my-2 font-semibold text-xl">Ricerca top 10</h3>
+				<pre class="my-2">	Query:
+	SELECT P.Id, P.Titolo, P.Tipo
+	FROM ProdCinema as P JOIN Visione as V on 
+	P.Id = V.ProdCinema
+	WHERE V.Data > DATE_ADD((CAST(GETDATE() AS Date) INTERVAL -1 MONTH)
+	GROUP BY V.ProdCinema
+	ORDER BY COUNT(V.ProdCinema) DESC
+	LIMIT 10</pre>
+				<button class="py-1 px-2 m-2 border-2 rounded-md" onclick="submit9()">esegui</button>
+			</li>
+
+			<li class="p-2 m-2">
+				<h3 class="mx-auto my-2 font-semibold text-xl">Ricerca consigliati</h3>
+				<pre class="my-2">	Query:
+	SELECT P.Id, P.Titolo, P.Tipo
+	FROM Visioni as V JOIN ProdCinema as P 
+	ON V.ProdCin = P.Id JOIN (
+		SELECT P.Genere as FavGen
+		FROM Visione as V JOIN ProdCinema as P 
+		ON V.ProdCin = P.Id
+		WHERE	V.Utente = ... AND V.Account = ...
+		GROUP BY P.Genere
+		ORDER BY COUNT(*) DESC
+		LIMIT 1
+	) t ON P.Genere = t.FavGen
+	LIMIT 5</pre>
+				<button class="py-1 px-2 m-2 border-2 rounded-md" onclick="submit10()">esegui</button>
+			</li>
+
+			<li class="p-2 m-2">
+				<h3 class="mx-auto my-2 font-semibold text-xl">Ricerca prodotto</h3>
+				<pre class="my-2">	Query:
+	SELECT P.Id, P.Titolo, P.Tipo
+	FROM ProdCinema
+	WHERE</pre>
+				<button class="py-1 px-2 m-2 border-2 rounded-md" onclick="submit11()">esegui</button>
+			</li>
+			
+			<li class="p-2 m-2">
+				<h3 class="mx-auto my-2 font-semibold text-xl">Visione prodotto</h3>
+				<pre class="my-2">	Query:
+	INSERT INTO Visionato (Utente, Account, ProdCinema, Watchtime)
+	VALUES (...)</pre>
+				<button class="py-1 px-2 m-2 border-2 rounded-md" onclick="submit12()">esegui</button>
+			</li>
+
+			<li class="p-2 m-2">
+				<h3 class="mx-auto my-2 font-semibold text-xl">Valutazione prodotto</h3>
+				<pre class="my-2">	Query:
+	INSERT INTO Recensione (Utente, Account, ProdCinema,
+	Gradimento)
+	VALUES (...)</pre>
+				<button class="py-1 px-2 m-2 border-2 rounded-md" onclick="submit13()">esegui</button>
+			</li>
+
+			<li class="p-2 m-2">
+				<h3 class="mx-auto my-2 font-semibold text-xl">Ricerca informazioni</h3>
+				<pre class="my-2">	Query:
+	SELECT Rating, Durata, Budget, Anno, CARA, Stagione, SerieTV
+	FROM ProdCinema
+	WHERE ...</pre>
+				<button class="py-1 px-2 m-2 border-2 rounded-md" onclick="submit14()">esegui</button>
+			</li>
+
+		</ol>
+	</main>
+
+
 </body>
+
+<!-- <script defer>
+	for(let i=0; i<14; i++) {
+		let el = document.querySelectorAll("li")[i]
+		el.addEventListener('click', () => submit(i))
+		console.log('a')
+	}
+	let el = document.querySelectorAll("#createDB")
+	el.addEventListener('click', () => {
+		const res = fetch('http://localhost:8000/createDB/riverflex');
+	})
+
+	function submit (i) {
+		const res = fetch('http://localhost:8000/op/'+ i );
+	}
+</script> -->
 
 </html>
