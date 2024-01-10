@@ -10,41 +10,51 @@
 </head>
 
 <script>
-	//crea il DB e le tabelle
-	const res = fetch('http://localhost:8000/createDB/riverflex');
+	function createDB() {
+		const res = fetch('http://localhost:8000/createDB/riverflex');
+	}
 </script>
 
 <body>
 	<main class="flex flex-col justify-center">
 		<h1 class="mx-auto my-8 text-5xl font-bold text-teal-500">RiverFlix</h1>
 
-		<h2 class="mx-auto my-4 text-2xl font-semibold">Operazioni sul DB:</h2>
+		<h2 class="mx-auto my-4 text-3xl font-semibold">Creazione del DB:</h2>
+
+		<div class="p-2 m-2">
+				<h3 class="mx-auto my-2 font-semibold text-xl">Creazione DB e delle tabelle</h3>
+				<!-- <pre class="my-2"></pre> -->
+				<button id="creteDB" class="py-1 px-2 m-2 border-2 rounded-md" onclick="createDB()">esegui</button>
+		</div>
+
+
+		<h2 class="mx-auto my-4 text-3xl font-semibold">Operazioni sul DB:</h2>
 
 		<ol class="list-decimal mx-8">
 			<li class="p-2 m-2">
-				<h3 class="mx-auto my-2 text-xl">Inserimento prodotto</h3>
+				<h3 class="mx-auto my-2 font-semibold text-xl">Inserimento prodotto</h3>
 				<pre class="my-2">	Query:
 	INSERT INTO ProdCinema (Id, Rating, Durata, Budget, Anno,
 	Titolo, CARA, Scadenza, Tipo, Stagione, SerieTV)
 	VALUES (...)
 
 	INSERT INTO Creazione()
-	VALUES (‘idEpisodio’ , ‘codicePersona’)
+	VALUES ('idEpisodio' , 'codicePersona')
 	
 	INSERT INTO Parte()
-	VALUES (‘idEpisodio’ , ...)
+	VALUES ('idEpisodio' , ...)
 
 	INSERT INTO Categoria()
-	VALUES (‘idEpisodio’ , ‘categoria’)
+	VALUES ('idEpisodio' , 'categoria')
 
 	INSERT INTO Ambientazione()
-	VALUES (‘idEpisodio’ , ‘location’)
+	VALUES ('idEpisodio' , 'location')
 </pre>
 				<button class="py-1 px-2 m-2 border-2 rounded-md">esegui</button>
 			</li>
 
 			<li class="p-2 m-2">
-				<h3 class="mx-auto my-2 text-xl">Rimozione prodotto</h3>
+				<h3 class="mx-auto my-2 font-semibold text-xl">Rimozione prodotto</h3>
 				<pre class="my-2">	Query:
 	DELETE FROM ProdCinema 
 	WHERE Scadenza &lt; CAST(GETDATE() AS Date)</pre>
@@ -52,7 +62,7 @@
 			</li>
 
 			<li class="p-2 m-2">
-				<h3 class="mx-auto my-2 text-xl">Aggiornamento prodotto</h3>
+				<h3 class="mx-auto my-2 font-semibold text-xl">Aggiornamento prodotto</h3>
 				<pre class="my-2">	Query:
 	UPDATE ProdCinema ()
 	SET ...
@@ -61,7 +71,7 @@
 			</li>
 
 			<li class="p-2 m-2">
-				<h3 class="mx-auto my-2 text-xl">Aggiornamento rating</h3>
+				<h3 class="mx-auto my-2 font-semibold text-xl">Aggiornamento rating</h3>
 				<pre class="my-2">	Query:
 	UPDATE ProdCinema
 	SET Rating = t.meanR
@@ -75,7 +85,7 @@
 			</li>
 
 			<li class="p-2 m-2">
-				<h3 class="mx-auto my-2 text-xl">Inserimento account</h3>
+				<h3 class="mx-auto my-2 font-semibold text-xl">Inserimento account</h3>
 				<pre class="my-2">	Query:
 	INSERT INTO Account (Mail, Psw, Abbonamento, DataCreaz)
 	VALUES (...)</pre>
@@ -83,7 +93,7 @@
 			</li>
 			
 			<li class="p-2 m-2">
-				<h3 class="mx-auto my-2 text-xl">Cambio abbonamento</h3>
+				<h3 class="mx-auto my-2 font-semibold text-xl">Cambio abbonamento</h3>
 				<pre class="my-2">	Query:
 	UPDATE Account
 	SET Abbonamento = ''...''
@@ -92,38 +102,85 @@
 			</li>
 
 			<li class="p-2 m-2">
-				<h3 class="mx-auto my-2 text-xl">Rimozione account</h3>
+				<h3 class="mx-auto my-2 font-semibold text-xl">Rimozione account</h3>
 				<pre class="my-2">	Query:
 	DELETE FROM Account
 	WHERE Mail = ''...'</pre>
 				<button class="py-1 px-2 m-2 border-2 rounded-md">esegui</button>
 			</li>
-			<li class="p-2 m-2">
-				<h3 class="mx-auto my-2 text-xl">Inserimento account</h3>
+			<li clas
+			s="p-2 m-2">
+				<h3 class="mx-auto my-2 font-semibold text-xl">Inserimento utente</h3>
 				<pre class="my-2">	Query:
-	INSERT INTO Account (Mail, Psw, Abbonamento, DataCreaz)
+	INSERT INTO Utente (Nome, Account, Età, Posizione, Ling,
+	Disp, TempoUtilizzo)
 	VALUES (...)</pre>
 				<button class="py-1 px-2 m-2 border-2 rounded-md">esegui</button>
 			</li>
+
 			<li class="p-2 m-2">
-				<h3 class="mx-auto my-2 text-xl">Inserimento account</h3>
+				<h3 class="mx-auto my-2 font-semibold text-xl">Ricerca top 10</h3>
 				<pre class="my-2">	Query:
-	INSERT INTO Account (Mail, Psw, Abbonamento, DataCreaz)
+	SELECT P.Id, P.Titolo, P.Tipo
+	FROM ProdCinema as P JOIN Visione as V on 
+	P.Id = V.ProdCinema
+	WHERE V.Data > DATE_ADD((CAST(GETDATE() AS Date) INTERVAL -1 MONTH)
+	GROUP BY V.ProdCinema
+	ORDER BY COUNT(V.ProdCinema) DESC
+	LIMIT 10</pre>
+				<button class="py-1 px-2 m-2 border-2 rounded-md">esegui</button>
+			</li>
+
+			<li class="p-2 m-2">
+				<h3 class="mx-auto my-2 font-semibold text-xl">Ricerca consigliati</h3>
+				<pre class="my-2">	Query:
+	SELECT P.Id, P.Titolo, P.Tipo
+	FROM Visioni as V JOIN ProdCinema as P 
+	ON V.ProdCin = P.Id JOIN (
+		SELECT P.Genere as FavGen
+		FROM Visione as V JOIN ProdCinema as P 
+		ON V.ProdCin = P.Id
+		WHERE	V.Utente = ... AND V.Account = ...
+		GROUP BY P.Genere
+		ORDER BY COUNT(*) DESC
+		LIMIT 1
+	) t ON P.Genere = t.FavGen
+	LIMIT 5</pre>
+				<button class="py-1 px-2 m-2 border-2 rounded-md">esegui</button>
+			</li>
+
+			<li class="p-2 m-2">
+				<h3 class="mx-auto my-2 font-semibold text-xl">Ricerca prodotto</h3>
+				<pre class="my-2">	Query:
+	SELECT P.Id, P.Titolo, P.Tipo
+	FROM ProdCinema
+	WHERE</pre>
+				<button class="py-1 px-2 m-2 border-2 rounded-md">esegui</button>
+			</li>
+			
+			<li class="p-2 m-2">
+				<h3 class="mx-auto my-2 font-semibold text-xl">Visione prodotto</h3>
+				<pre class="my-2">	Query:
+	INSERT INTO Visionato (Utente, Account, ProdCinema, Watchtime)
 	VALUES (...)</pre>
 				<button class="py-1 px-2 m-2 border-2 rounded-md">esegui</button>
 			</li>
+
 			<li class="p-2 m-2">
-				<h3 class="mx-auto my-2 text-xl">Inserimento account</h3>
+				<h3 class="mx-auto my-2 font-semibold text-xl">Valutazione prodotto</h3>
 				<pre class="my-2">	Query:
-	INSERT INTO Account (Mail, Psw, Abbonamento, DataCreaz)
+	INSERT INTO Recensione (Utente, Account, ProdCinema,
+	Gradimento)
 	VALUES (...)</pre>
 				<button class="py-1 px-2 m-2 border-2 rounded-md">esegui</button>
 			</li>
+
 			<li class="p-2 m-2">
-				<h3 class="mx-auto my-2 text-xl">Inserimento account</h3>
+				<h3 class="mx-auto my-2 font-semibold text-xl">Ricerca informazioni</h3>
 				<pre class="my-2">	Query:
-	INSERT INTO Account (Mail, Psw, Abbonamento, DataCreaz)
-	VALUES (...)</pre>
+	SELECT Rating, Durata, Budget, Anno, CARA, Stagione, SerieTV
+	FROM ProdCinema
+	WHERE ...</pre>
 				<button class="py-1 px-2 m-2 border-2 rounded-md">esegui</button>
 			</li>
 
@@ -132,5 +189,21 @@
 
 
 </body>
+
+<!-- <script defer>
+	for(let i=0; i<14; i++) {
+		let el = document.querySelectorAll("li")[i]
+		el.addEventListener('click', () => submit(i))
+		console.log('a')
+	}
+	let el = document.querySelectorAll("#createDB")
+	el.addEventListener('click', () => {
+		const res = fetch('http://localhost:8000/createDB/riverflex');
+	})
+
+	function submit (i) {
+		const res = fetch('http://localhost:8000/op/'+ i );
+	}
+</script> -->
 
 </html>
