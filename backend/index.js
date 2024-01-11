@@ -245,15 +245,8 @@ const userTest = [
 
 //middleware
 app.use(express.json());
+app.use(cors());
 
-// app.post("/createDB/:dbname", async (req, res) => {
-//   const { dbname } = req.params;
-//   try {
-//     res.json();
-//   } catch (e) {
-//     res.status(500).json(e);
-//   }
-// });
 
 class connection {
   #_conn;
@@ -289,13 +282,13 @@ app.get("/table/:tablename", async (req, res) => {
 
 app.post("/createTables", async (req, res) => {
   try {
-    // let conn = await connect.getConnection();
+    let conn = await connect.getConnection();
 
-    // // console.log("inserimento schemi ...");
-    // for (let query of CREATE_QUERIES) {
-    //   let result = await conn.promise().query(query);
-    //   // console.log(result[0].serverStatus === 2 ? "inserito con successo" : "errore");
-    // }
+    // console.log("inserimento schemi ...");
+    for (let query of CREATE_QUERIES) {
+      let result = await conn.promise().query(query);
+      // console.log(result[0].serverStatus === 2 ? "inserito con successo" : "errore");
+    }
 
     res.json({ out: "Schemi inseriti" });
   } catch (err) {
@@ -308,9 +301,8 @@ app.post("/deleteTables", async (req, res) => {
   try {
     let conn = await connect.getConnection();
 
-    console.log("pulizia db ...");
     for (let table_name of TABLES_NAME) {
-      await conn.promise().query(`DROP TABLE *`);
+      await conn.promise().query(`DROP TABLE IF EXISTS DaVedere, InVisione, Visione, Recensione, Parte, Creazione, Categoria, Ambientazione, Utente, Account, Personale, ProdCinema, SerieTV`);
     }
 
     res.json({ out: "Schemi rimossi" });
