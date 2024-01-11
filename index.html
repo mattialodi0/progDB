@@ -11,49 +11,49 @@
 
 <script>
 	function createDB() {
-		const res = fetch('http://localhost:8000/createTables');
+		const res = fetch('http://localhost:8001/createTables');
 	}
 	function submit1() {
-		const res = fetch('http://localhost:8000/op/1');
+		const res = fetch('http://localhost:8001/op/1');
 	}
 	function submit2() {
-		const res = fetch('http://localhost:8000/op/2');
+		const res = fetch('http://localhost:8001/op/2');
 	}
 	function submit3() {
-		const res = fetch('http://localhost:8000/op/3');
+		const res = fetch('http://localhost:8001/op/3');
 	}
 	function submit4() {
-		const res = fetch('http://localhost:8000/op/4');
+		const res = fetch('http://localhost:8001/op/4');
 	}
 	function submit5() {
-		const res = fetch('http://localhost:8000/op/5');
+		const res = fetch('http://localhost:8001/op/5');
 	}
 	function submit6() {
-		const res = fetch('http://localhost:8000/op/6');
+		const res = fetch('http://localhost:8001/op/6');
 	}
 	function submit7() {
-		const res = fetch('http://localhost:8000/op/7');
+		const res = fetch('http://localhost:8001/op/7');
 	}
 	function submit8() {
-		const res = fetch('http://localhost:8000/op/8');
+		const res = fetch('http://localhost:8001/op/8');
 	}
 	function submit9() {
-		const res = fetch('http://localhost:8000/op/9');
+		const res = fetch('http://localhost:8001/op/9');
 	}
 	function submit10() {
-		const res = fetch('http://localhost:8000/op/10');
+		const res = fetch('http://localhost:8001/op/10');
 	}
 	function submit11() {
-		const res = fetch('http://localhost:8000/op/11');
+		const res = fetch('http://localhost:8001/op/11');
 	}
 	function submit12() {
-		const res = fetch('http://localhost:8000/op/12');
+		const res = fetch('http://localhost:8001/op/12');
 	}
 	function submit13() {
-		const res = fetch('http://localhost:8000/op/13');
+		const res = fetch('http://localhost:8001/op/13');
 	}
 	function submit14() {
-		const res = fetch('http://localhost:8000/op/14');
+		const res = fetch('http://localhost:8001/op/14');
 	}
 </script>
 
@@ -61,10 +61,10 @@
 	<main class="flex flex-col justify-center">
 		<h1 class="mx-auto my-8 text-5xl font-bold text-teal-500">RiverFlix</h1>
 
-		<h2 class="mx-auto my-4 text-3xl font-semibold">Creazione del DB:</h2>
+		<h2 class="mx-auto my-4 text-3xl font-semibold">Creazione dello schema:</h2>
 
 		<div class="p-2 m-2">
-				<h3 class="mx-auto my-2 font-semibold text-xl">Creazione DB e delle tabelle</h3>
+				<h3 class="mx-auto my-2 font-semibold text-xl">Creazione delle tabelle</h3>
 				<!-- <pre class="my-2"></pre> -->
 				<button id="creteDB" class="py-1 px-2 m-2 border-2 rounded-md" onclick="createDB()">esegui</button>
 		</div>
@@ -240,11 +240,11 @@
 	}
 	let el = document.querySelectorAll("#createDB")
 	el.addEventListener('click', () => {
-		const res = fetch('http://localhost:8000/createDB/riverflex');
+		const res = fetch('http://localhost:8001/createDB/riverflex');
 	})
 
 	function submit (i) {
-		const res = fetch('http://localhost:8000/op/'+ i );
+		const res = fetch('http://localhost:8001/op/'+ i );
 	}
 </script> -->
 
