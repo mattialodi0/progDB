@@ -285,56 +285,33 @@ app.post("/op/:opNum", async (req, res) => {
 
         const [query1_1] = await connection.promise().query(
           `INSERT INTO ProdCinema(Id, Rating, Durata, Budget, Anno, Titolo, CARA, Scadenza, Tipo, Stagione, SerieTV) 
-          VALUES (NULL, 0, ?, ?, ?, ?, ?, ?, ?, ?, ?) `,
-          prodCin_test[req_num].getProdArr()
-        );
+          VALUES (NULL, 10140,165000000,2013,"Interstellar","PG",null,"film",null,null,null)`);
 
         let prod_id = query1_1.insertId;
 
         // inserimento personale
-
-        await connection.promise().query(
+        const [query1_2] = await connection.promise().query(
           `INSERT INTO Personale(Codice, Nome, DataNasc, Nazionalità, Compito)
-            VALUES (?, ?, ?, ?, ?), (?, ?, ?, ?, ?)`,
-          [
-            registi_query_1[req_num],
-            "Pippo",
-            "1978-10-08",
-            "francese",
-            "Regista",
-            attori_query_1[req_num],
-            "Francesco",
-            "1988-06-18",
-            "americano",
-            "Attore",
-          ]
-        );
+            VALUES ("Regista1","Nolan","1978-10-08","francese","Regista"), ("Attore1","Francesco","1988-06-18","americano","Attore")`);
 
         //inserimento nella relazione
-        await connection.promise().query(
+        const [query1_3] = await connection.promise().query(
           `INSERT INTO Creazione(ProdCin, Personale) 
-            VALUES (?, ?), (?,?) `,
-          [prod_id, registi_query_1[req_num], prod_id, attori_query_1[req_num]]
-        );
+            VALUES (${prod_id}, 'Regista1'), (${prod_id}, 'Attore1')`);
 
-        await connection.promise().query(
+        const [query1_4] = await connection.promise().query(
           `INSERT INTO Parte(ProdCinema, Attore, Ruolo) 
-            VALUES (?, ?, ?) `,
-          [prod_id, attori_query_1[req_num], "Cane"]
-        );
+            VALUES (${prod_id}, 'Attore1, 'Cane) `);
 
-        await connection.promise().query(
+        const [query1_5] = await connection.promise().query(
           `INSERT INTO Categoria(ProdCin, Genere) 
-            VALUES (?, ?) `,
-          [prod_id, "Commedia"]
-        );
+            VALUES (${prod_id}, 'Commedia') `);
 
-        await connection.promise().query(
+        const [query1_6] = await connection.promise().query(
           `INSERT INTO Ambientazione(ProdCin, Location) 
-            VALUES (?, ?) `,
-          [prod_id, "Marte"]
-        );
+            VALUES (${prod_id}, 'Giove')`);
 
+        res.json({ out: {'ProdCinema':query1_1, 'Personale': query1_2, 'Creazione': query1_3, 'Parte':query1_4, 'Categoria': query1_5, 'Ambientazione': query1_6}});
         break;
 
       case "2":

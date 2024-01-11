@@ -121,22 +121,22 @@
 				<h3 class="mx-auto my-2 font-semibold text-xl">Inserimento prodotto</h3>
 				<pre class="my-2">Query:
 	INSERT INTO ProdCinema (Id, Rating, Durata, Budget, Anno, Titolo, CARA, Scadenza, Tipo, Stagione, SerieTV)
-	VALUES  (10140,165000000,2013,"Interstellar","PG",null,"film",null,null,null)
-			(1320,2000000,2005,"Pilot","PG",null,"serie_tv",1,null,1)
-			(1320,2000000,2005,"Purple Giraffe","PG",null,"serie_tv",1,null,2)
-			(1320,2000000,2005,"Sweet Taste of Liberty","PG",null,"serie_tv",1,null,3)
+	VALUES  (NULL, 10140,165000000,2013,"Interstellar","PG",null,"film",null,null,null)
+
+	INSERT INTO Personale()
+	VALUES ("Regista1","Nolan","1978-10-08","francese","Regista"), ("attore1","Francesco","1988-06-18","americano","Attore");
 
 	INSERT INTO Creazione()
-	VALUES ('idEpisodio' , 'codicePersona')
+	VALUES (idFilm, 'Regista1'), (idFilm 'Attore1');
 	
 	INSERT INTO Parte()
-	VALUES ('idEpisodio' , ...)
+	VALUES ('idFilm' , ...)
 
 	INSERT INTO Categoria()
-	VALUES ('idEpisodio' , 'categoria')
+	VALUES ('idFilm' , 'Commedia')
 
 	INSERT INTO Ambientazione()
-	VALUES ('idEpisodio' , 'location')</pre>
+	VALUES ('idFilm' , 'Giove')</pre>
 				<button class="py-1 px-2 m-2 border-2 rounded-md" onclick="submit1()">esegui</button>
 			</li>
 
