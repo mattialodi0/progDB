@@ -344,7 +344,7 @@ app.post("/op/:opNum", async (req, res) => {
 
         await connection.promise().query(
           `INSERT INTO Personale(Codice, Nome, DataNasc, Nazionalità, Compito)
-                    VALUES (?, ?, ?, ?, ?), (?, ?, ?, ?, ?)`,
+            VALUES (?, ?, ?, ?, ?), (?, ?, ?, ?, ?)`,
           [
             registi_query_1[req_num],
             "Pippo",

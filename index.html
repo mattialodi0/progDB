@@ -10,88 +10,89 @@
 </head>
 
 <script>
+	const server = 'http://localhost:8001'
 	async function createDB() {
-		let res = await fetch('http://localhost:8001/createTables', { method:'POST'});
+		let res = await fetch(server + '/createTables', { method:'POST'});
 		res = await res.json();
 		if(res?.out) document.querySelector('#output').innerText = res.out;
 	}
 	async function deleteDB() {
-		let res = await fetch('http://localhost:8001/deleteTables', { method:'POST'});
+		let res = await fetch(server + '/deleteTables', { method:'POST'});
 		res = await res.json();
 		if(res?.out) document.querySelector('#output').innerText = res.out;
 	}
 	async function submit1() {
-		const res = await fetch('http://localhost:8001/op/1', { method:'POST'});
+		const res = await fetch(server + '/op/1', { method:'POST'});
 		res = await res.json();
 		if(res?.out) document.querySelector('#output').innerText = res.out;
 	}
 	async function submit2() {
-		const res = await fetch('http://localhost:8001/op/2', { method:'POST'});
+		const res = await fetch(server + '/op/2', { method:'POST'});
 		res = await res.json();
 		if(res?.out) document.querySelector('#output').innerText = res.out;
 	}
 	async function submit3() {
-		const res = await fetch('http://localhost:8001/op/3', { method:'POST'});
+		const res = await fetch(server + '/op/3', { method:'POST'});
 		res = await res.json();
 		if(res?.out) document.querySelector('#output').innerText = res.out;
 	}
 	async function submit4() {
-		const res = await fetch('http://localhost:8001/op/4', { method:'POST'});
+		const res = await fetch(server + '/op/4', { method:'POST'});
 		res = await res.json();
 		if(res?.out) document.querySelector('#output').innerText = res.out;
 	}
 	async function submit5() {
-		const res = await fetch('http://localhost:8001/op/5', { method:'POST'});
+		const res = await fetch(server + '/op/5', { method:'POST'});
 		res = await res.json();
 		if(res?.out) document.querySelector('#output').innerText = res.out;
 	}
 	async function submit6() {
-		const res = await fetch('http://localhost:8001/op/6', { method:'POST'});
+		const res = await fetch(server + '/op/6', { method:'POST'});
 		res = await res.json();
 		if(res?.out) document.querySelector('#output').innerText = res.out;
 	}
 	async function submit7() {
-		const res = await fetch('http://localhost:8001/op/7', { method:'POST'});
+		const res = await fetch(server + '/op/7', { method:'POST'});
 		res = await res.json();
 		if(res?.out) document.querySelector('#output').innerText = res.out;
 	}
 	async function submit8() {
-		const res = await fetch('http://localhost:8001/op/8', { method:'POST'});
+		const res = await fetch(server + '/op/8', { method:'POST'});
 		res = await res.json();
 		if(res?.out) document.querySelector('#output').innerText = res.out;
 	}
 	async function submit9() {
-		const res = await fetch('http://localhost:8001/op/9', { method:'POST'});
+		const res = await fetch(server + '/op/9', { method:'POST'});
 		res = await res.json();
 		if(res?.out) document.querySelector('#output').innerText = res.out;
 	}
 	async function submit10() {
-		const res = await fetch('http://localhost:8001/op/10', { method:'POST'});
+		const res = await fetch(server + '/op/10', { method:'POST'});
 		res = await res.json();
 		if(res?.out) document.querySelector('#output').innerText = res.out;
 	}
 	async function submit11() {
-		const res = await fetch('http://localhost:8001/op/11', { method:'POST'});
+		const res = await fetch(server + '/op/11', { method:'POST'});
 		res = await res.json();
 		if(res?.out) document.querySelector('#output').innerText = res.out;
 	}
 	async function submit12() {
-		const res = await fetch('http://localhost:8001/op/12', { method:'POST'});
+		const res = await fetch(server + '/op/12', { method:'POST'});
 		res = await res.json();
 		if(res?.out) document.querySelector('#output').innerText = res.out;
 	}
 	async function submit13() {
-		const res = await fetch('http://localhost:8001/op/13', { method:'POST'});
+		const res = await fetch(server + '/op/13', { method:'POST'});
 		res = await res.json();
 		if(res?.out) document.querySelector('#output').innerText = res.out;
 	}
 	async function submit14() {
-		const res = await fetch('http://localhost:8001/op/14', { method:'POST'});
+		const res = await fetch(server + '/op/14', { method:'POST'});
 		res = await res.json();
 		if(res?.out) document.querySelector('#output').innerText = res.out;
 	}
 	async function submit15() {
-		const res = await fetch('http://localhost:8001/op/15', { method:'POST'});
+		const res = await fetch(server + '/op/15', { method:'POST'});
 		res = await res.json();
 		if(res?.out) document.querySelector('#output').innerText = res.out;
 	}
