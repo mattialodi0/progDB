@@ -301,7 +301,7 @@ app.post("/op/:opNum", async (req, res) => {
 
         const [query1_4] = await connection.promise().query(
           `INSERT INTO Parte(ProdCinema, Attore, Ruolo) 
-            VALUES (${prod_id}, 'Attore1, 'Cane) `);
+            VALUES (${prod_id}, 'Attore1, 'Cane') `);
 
         const [query1_5] = await connection.promise().query(
           `INSERT INTO Categoria(ProdCin, Genere) 

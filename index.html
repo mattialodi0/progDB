@@ -123,19 +123,19 @@
 	INSERT INTO ProdCinema (Id, Rating, Durata, Budget, Anno, Titolo, CARA, Scadenza, Tipo, Stagione, SerieTV)
 	VALUES  (NULL, 10140,165000000,2013,"Interstellar","PG",null,"film",null,null,null)
 
-	INSERT INTO Personale()
+	INSERT INTO Personale(Codice, Nome, DataNasc, Nazionalità, Compito)
 	VALUES ("Regista1","Nolan","1978-10-08","francese","Regista"), ("attore1","Francesco","1988-06-18","americano","Attore");
 
-	INSERT INTO Creazione()
+	INSERT INTO Creazione(ProdCin, Personale)
 	VALUES (idFilm, 'Regista1'), (idFilm 'Attore1');
 	
-	INSERT INTO Parte()
-	VALUES ('idFilm' , ...)
+	INSERT INTO Parte(ProdCinema, Attore, Ruolo)
+	VALUES ('idFilm' , 'Attore1, 'Cane')
 
-	INSERT INTO Categoria()
+	INSERT INTO Categoria(ProdCinema, Genere)
 	VALUES ('idFilm' , 'Commedia')
 
-	INSERT INTO Ambientazione()
+	INSERT INTO Ambientazione(ProdCin, Location)
 	VALUES ('idFilm' , 'Giove')</pre>
 				<button class="py-1 px-2 m-2 border-2 rounded-md" onclick="submit1()">esegui</button>
 			</li>
