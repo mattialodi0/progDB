@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const {createConnection} = require("mysql2");
-
+const cred = require('./credentials.js').DBcredentials;
 
 
 
@@ -96,14 +96,10 @@ class connection {
     async getConnection(){
         if(this.#_conn === null && this.#_conn === undefined){
             this.#_conn = await createConnection({
-                // host: 'sql11.freesqldatabase.com',
-                // database: 'sql11675959',
-                // user: 'sql11675959',
-                // password:'ancora non me la da zio pera'
-                host: '93.65.85.208',
-                database: 'riverflix',
-                user: 'uprova',
-                password: '12345678'
+                host: cred.host,
+                database: cred.database,
+                user: cred.user,
+                password: cred.password,
             })
             await this.#_conn.connect()
         }
