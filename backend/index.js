@@ -284,7 +284,7 @@ app.post("/op/:opNum", async (req, res) => {
         let prod_id = query1_1.insertId;
 
         // inserimento personale
-        const [query1_2] = await connection.promise().query(
+        await connection.promise().query(
           `INSERT INTO Personale(Codice, Nome, DataNasc, Nazionalità, Compito)
             VALUES ("Regista1","Nolan","1978-10-08","francese","Regista"), ("Attore1","Francesco","1988-06-18","americano","Attore")`);
 
