@@ -111,7 +111,7 @@ const prodCin_test = [
 
 //middleware
 app.use(express.json());
-// app.use(cors({ credentials: true, origin: 'http://localhost:4000' }));
+app.use(cors({ credentials: true, origin: '93.65.85.208' }));
 
 // app.post("/createDB/:dbname", async (req, res) => {
 //   const { dbname } = req.params;
@@ -183,6 +183,7 @@ app.get("/table/:tablename", async (req, res) => {
   }
 });
 
+//!da controllare 1, 3, 8, 11, 14
 app.post("/op/:opNum", async (req, res) => {
   let connection = await connect.getConnection();
   const { opNum } = req.params;
@@ -244,15 +245,14 @@ app.post("/op/:opNum", async (req, res) => {
         break;
 
       case "3":
-        //aggiornamento prodotto
-        //come scelgo che attributo modificare?
-        //pensavo di fare così
-        const attributeName = req.body.attributeName;
+        //aggiornamento prodotto, inserimento episodio        
+        //Id, Rating, Durata, Budget, Anno, Titolo , Cara , Scadenza , Tipo ENUM('serie_tv','film') , Stagione,  Serietv, NumEpisodio 
+        
         const query3 = await connection.query(
           `UPDATE ProdCinema() 
-            SET ${attributeName} = ? 
+            SET Rating = ?, Durata = ?, Budget = ?, Anno = ?, Titolo = ? , Cara = ?, Scadenza = ?, Tipo = 'serie_tv', Stagione = ?, Serietv = ?, NumEpisodio = ? 
             WHERE Id = ? `,
-          [req.body.newValue, req.body.id]
+            Object.values()
         );
         res.send(query3);
         break;
@@ -361,12 +361,12 @@ app.post("/op/:opNum", async (req, res) => {
 
       case "11":
         //ricerca prodotto
-        //uso il titolo oppure tutti gli attributi?
+        //uso l'id
         const attributeName2 = req.body.attributeName;
         const query11 = await connection.query(
           `SELECT P.Id, P.Titolo, P.Tipo 
             FROM ProdCinema 
-            WHERE ${attributeName} = ? `,
+            WHERE Id = ? `,
           [req.body.userInput]
         );
         res.send(query11);
@@ -404,7 +404,7 @@ app.post("/op/:opNum", async (req, res) => {
 
       case "14":
         //ricerca info
-        //uso l'id?
+        //uso l'id 
         const query14 = await connection.query(
           `SELECT Rating, Durata, Budget, Anno, CARA, Stagione, SerieTV FROM ProdCinema 
             WHERE Id = ? `,
