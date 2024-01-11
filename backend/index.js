@@ -5,34 +5,36 @@ const { createConnection } = require("mysql2");
 const cred = require("./credentials.js").DBcredentials;
 
 const PORT = 10000;
-const SERIETV = "serie_tv";
-const FILM = "film";
+const SERIETV = 'serie_tv';
+const FILM = 'film';
+const TABLES_NAME = ['DaVedere','InVisione','Visione','Recensione','Parte','Creazione','Categoria','Ambientazione','Utente','Account','Personale', 'ProdCinema', 'SerieTV']
 const CREATE_QUERIES = [
-  `CREATE TABLE SerieTV(Id MEDIUMINT UNSIGNED not NULL AUTO_INCREMENT,Titolo VARCHAR(30) not NULL,NStagioni SMALLINT not NULL,PRIMARY KEY (Id))`,
-  `CREATE TABLE ProdCinema(Id MEDIUMINT UNSIGNED not NULL AUTO_INCREMENT, Rating SMALLINT DEFAULT 0, Durata MEDIUMINT not NULL, 
+    `CREATE TABLE IF NOT EXISTS SerieTV(Id MEDIUMINT UNSIGNED not NULL AUTO_INCREMENT,Titolo VARCHAR(30) not NULL,NStagioni SMALLINT not NULL,PRIMARY KEY (Id))`,
+    `CREATE TABLE IF NOT EXISTS ProdCinema(Id MEDIUMINT UNSIGNED not NULL AUTO_INCREMENT, Rating SMALLINT DEFAULT 0, Durata MEDIUMINT not NULL, 
         Budget INT not NULL, Anno YEAR(4), Titolo VARCHAR(30) not NULL, Cara ENUM('G','PG','PG-13','R','NC-17'), 
         Scadenza DATE not NULL, Tipo ENUM('serie_tv','film') not NULL, Stagione SMALLINT,  Serietv MEDIUMINT UNSIGNED, NumEpisodio SMALLINT,
         PRIMARY KEY (Id), FOREIGN KEY (Serietv) REFERENCES SerieTV(Id), CHECK(Rating >= 0 AND Rating <= 10))`,
-  `CREATE TABLE Personale(Codice CHAR(16) not NULL, Nome VARCHAR(20) not NULL, DataNasc DATE, Nazionalità VARCHAR(30), Compito VARCHAR(20), PRIMARY KEY(Codice))`,
-  `CREATE TABLE Account(Mail VARCHAR(40) not NULL, Password VARCHAR(100) not NULL, Abbonamento ENUM('mensile', 'semestrale', 'annuale', 'annuale PRO') not NULL,
-        DataCreaz DATE not NULL, PRIMARY KEY (Mail), CHECK(Mail REGEXP "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$"))`,
-  `CREATE TABLE Utente(Nome VARCHAR(20) not NULL, Account VARCHAR(40) not NULL, Età SMALLINT, Posizione VARCHAR(100), Ling VARCHAR(30),Dispositivo VARCHAR(20)
-        TempoUtilizzo MEDIUM INT UNSIGNED, PRIMARY KEY(Nome, Account), FOREIGN KEY (Account) REFERENCES Account(Mail))`,
-    `CREATE TABLE Ambientazione( ProdCin MEDIUMINT UNSIGNED not NULL, Location VARCHAR(30), FOREIGN KEY (ProdCin) REFERENCES ProdCinema(Id))`,
-    `CREATE TABLE Categoria(ProdCin MEDIUMINT UNSIGNED not NULL, Genere VARCHAR(30), FOREIGN KEY (ProdCin) REFERENCES ProdCinema(Id))`,
-    `CREATE TABLE Creazione(ProdCin MEDIUMINT UNSIGNED not NULL, Personale CHAR(16) not NULL, FOREIGN KEY (ProdCin) REFERENCES ProdCinema(Id), FOREIGN KEY (Personale) REFERENCES Personale(Codice))`,
-    `CREATE TABLE Parte( ProdCinema MEDIUMINT UNSIGNED not NULL, Attore CHAR(16) not NULL, Ruolo VARCHAR(20) not NULL, PRIMARY KEY (ProdCinema , Attore, Ruolo), 
+    `CREATE TABLE IF NOT EXISTS Personale(Codice CHAR(16) not NULL, Nome VARCHAR(20) not NULL, DataNasc DATE, Nazionalità VARCHAR(30), Compito VARCHAR(20), PRIMARY KEY(Codice))`,
+    `CREATE TABLE IF NOT EXISTS Account(Mail VARCHAR(40) not NULL, Password VARCHAR(100) not NULL, Abbonamento ENUM('mensile', 'semestrale', 'annuale', 'annuale PRO') not NULL,
+        DataCreaz DATE not NULL, PRIMARY KEY (Mail), CHECK(Mail RLIKE '^[a-zA-Z0-9][a-zA-Z0-9._-]*[a-zA-Z0-9._-]@[a-zA-Z0-9][a-zA-Z0-9._-]*[a-zA-Z0-9]\\\\.[a-zA-Z]{2,63}$'))`,
+    `CREATE TABLE IF NOT EXISTS Utente(Nome VARCHAR(20) not NULL, Account VARCHAR(40) not NULL, Eta SMALLINT, Posizione VARCHAR(100), Ling VARCHAR(30),Dispositivo VARCHAR(20),
+        TempoUtilizzo MEDIUMINT UNSIGNED, PRIMARY KEY(Nome, Account), FOREIGN KEY (Account) REFERENCES Account(Mail))`,
+    `CREATE TABLE IF NOT EXISTS Ambientazione( ProdCin MEDIUMINT UNSIGNED not NULL, Location VARCHAR(30), FOREIGN KEY (ProdCin) REFERENCES ProdCinema(Id))`,
+    `CREATE TABLE IF NOT EXISTS Categoria(ProdCin MEDIUMINT UNSIGNED not NULL, Genere VARCHAR(30), FOREIGN KEY (ProdCin) REFERENCES ProdCinema(Id))`,
+    `CREATE TABLE IF NOT EXISTS Creazione(ProdCin MEDIUMINT UNSIGNED not NULL, Personale CHAR(16) not NULL, FOREIGN KEY (ProdCin) REFERENCES ProdCinema(Id), FOREIGN KEY (Personale) REFERENCES Personale(Codice))`,
+    `CREATE TABLE IF NOT EXISTS Parte( ProdCinema MEDIUMINT UNSIGNED not NULL, Attore CHAR(16) not NULL, Ruolo VARCHAR(20) not NULL, PRIMARY KEY (ProdCinema , Attore, Ruolo), 
         FOREIGN KEY (ProdCinema) REFERENCES ProdCinema(Id), FOREIGN KEY (Attore) REFERENCES Personale(Codice))`,
-    `CREATE TABLE Recensione(,Utente VARCHAR(20) not NULL, Account VARCHAR(40) not NULL, ProdCinema MEDIUMINT UNSIGNED not NULL, Gradimento SMALLINT not NULL,
-        PRIMARY KEY (Utente, Account, ProdCinema), FOREIGN KEY (Utente) REFERENCES Utente(Nome), FOREIGN KEY (Account) REFERENCES Account(Mail), FOREIGN KEY (ProdCinema) REFERENCES ProdCinema(Id)
-        CHECK(Grandimento <= 10 AND Grandimento >= 0))`,
-  `CREATE TABLE Visione(Utente VARCHAR(20) not NULL, Account VARCHAR(40) not NULL, ProdCinema MEDIUMINT UNSIGNED not NULL, Watchtime INT UNSIGNED not NULL, Data DATE not NULL,
+    `CREATE TABLE IF NOT EXISTS Recensione(Utente VARCHAR(20) not NULL, Account VARCHAR(40) not NULL, ProdCinema MEDIUMINT UNSIGNED not NULL, Gradimento SMALLINT not NULL,
+        PRIMARY KEY (Utente, Account, ProdCinema), FOREIGN KEY (Utente) REFERENCES Utente(Nome), FOREIGN KEY (Account) REFERENCES Account(Mail), FOREIGN KEY (ProdCinema) REFERENCES ProdCinema(Id),
+        CHECK(Gradimento <= 10 AND Gradimento >= 0))`,
+    `CREATE TABLE IF NOT EXISTS Visione(Utente VARCHAR(20) not NULL, Account VARCHAR(40) not NULL, ProdCinema MEDIUMINT UNSIGNED not NULL, Watchtime INT UNSIGNED not NULL, Data DATE not NULL,
         PRIMARY KEY (Utente, Account, ProdCinema ), FOREIGN KEY (Utente) REFERENCES Utente(Nome), FOREIGN KEY (Account) REFERENCES Account(Mail), FOREIGN KEY (ProdCinema ) REFERENCES ProdCinema(Id))`,
-  `CREATE TABLE InVisione(Utente VARCHAR(20) not NULL, Account VARCHAR(40) not NULL, ProdCinema MEDIUMINT UNSIGNED not NULL, Tempo INT UNSIGNED not NULL, PRIMARY KEY (Utente, Account, ProdCinema ),
+    `CREATE TABLE IF NOT EXISTS InVisione(Utente VARCHAR(20) not NULL, Account VARCHAR(40) not NULL, ProdCinema MEDIUMINT UNSIGNED not NULL, Tempo INT UNSIGNED not NULL, PRIMARY KEY (Utente, Account, ProdCinema ),
         FOREIGN KEY (Utente) REFERENCES Utente(Nome), FOREIGN KEY (account) REFERENCES Account(Mail), FOREIGN KEY (ProdCinema) REFERENCES ProdCinema(Id))`,
-  `CREATE TABLE DaVedere(Utente VARCHAR(20) not NULL, Account VARCHAR(40) not NULL, ProdCinema MEDIUMINT UNSIGNED not NULL, PRIMARY KEY (Utente, Account, ProdCinema ),
-        FOREIGN KEY (Utente) REFERENCES Utente(Nome), FOREIGN KEY (Account) REFERENCES Account(Mail),FOREIGN KEY (ProdCinema ) REFERENCES ProdCinema(Id))`,
-];
+    `CREATE TABLE IF NOT EXISTS DaVedere(Utente VARCHAR(20) not NULL, Account VARCHAR(40) not NULL, ProdCinema MEDIUMINT UNSIGNED not NULL, PRIMARY KEY (Utente, Account, ProdCinema ),
+        FOREIGN KEY (Utente) REFERENCES Utente(Nome), FOREIGN KEY (Account) REFERENCES Account(Mail),FOREIGN KEY (ProdCinema ) REFERENCES ProdCinema(Id))`
+]
+
 
 class ProdCinema {
   durata_val;
@@ -125,21 +127,16 @@ app.use(cors({ credentials: true, origin: '93.65.85.208' }));
 class connection {
   #_conn;
 
-  constructor() {
-    this.#_conn = null;
-  }
-  async getConnection() {
-    if (this.#_conn === null && this.#_conn === undefined) {
-      this.#_conn = await createConnection({
-        host: cred.host,
-        database: cred.database,
-        user: cred.user,
-        password: cred.password,
-      });
-      await this.#_conn.connect();
+    constructor() {
+        this.#_conn = null
     }
-    return this.#_conn;
-  }
+    async getConnection(){
+        if(this.#_conn === null || this.#_conn === undefined){
+            this.#_conn = await createConnection(cred)
+            await this.#_conn.connect()
+        }
+        return this.#_conn;
+    }
 }
 
 const connect = new connection();
@@ -150,7 +147,6 @@ app.get("/table/:tablename", async (req, res) => {
     let conn = await connect.getConnection();
     let query = `SELECT * FROM ${tablename} WHERE 1`;
 
-    console.log(conn);
 
     const [results] = await conn.query(query);
 
@@ -161,18 +157,31 @@ app.get("/table/:tablename", async (req, res) => {
   }
 });
 
-app.post("/createTables", async (req, res) => {
-  try {
-    let conn = await connect.getConnection();
-    await Promise.all(
-      CREATE_QUERIES.map((query) => {
-        return async () => await conn.query(query);
-      })
-    );
-  } catch (err) {
-    res.status(400).json(e);
-  }
-});
+app.post('/createTables', async (req,res) => {
+    try{
+        let conn = await connect.getConnection();
+
+        //Clear DB
+        /*
+        console.log("pulizia db ...")
+        for (let table_name of TABLES_NAME){
+            await conn.promise().query(`DROP TABLE ${table_name}`);
+        }
+
+         */
+
+        console.log("inserimento schemi ...")
+        for ( let query of CREATE_QUERIES){
+            let result = await conn.promise().query(query);
+            console.log(result[0].serverStatus === 2 ? 'inserito con successo' : 'errore');
+        }
+        console.log("finito. Schemi inseriti")
+
+    }catch(err){
+        console.log(err)
+        res.status(400).json(err);
+    }
+})
 
 app.get("/table/:tablename", async (req, res) => {
   const { tablename } = req.params;
@@ -245,9 +254,9 @@ app.post("/op/:opNum", async (req, res) => {
         break;
 
       case "3":
-        //aggiornamento prodotto, inserimento episodio        
-        //Id, Rating, Durata, Budget, Anno, Titolo , Cara , Scadenza , Tipo ENUM('serie_tv','film') , Stagione,  Serietv, NumEpisodio 
-        
+        //aggiornamento prodotto, inserimento episodio
+        //Id, Rating, Durata, Budget, Anno, Titolo , Cara , Scadenza , Tipo ENUM('serie_tv','film') , Stagione,  Serietv, NumEpisodio
+
         const query3 = await connection.query(
           `UPDATE ProdCinema() 
             SET Rating = ?, Durata = ?, Budget = ?, Anno = ?, Titolo = ? , Cara = ?, Scadenza = ?, Tipo = 'serie_tv', Stagione = ?, Serietv = ?, NumEpisodio = ? 
@@ -404,7 +413,7 @@ app.post("/op/:opNum", async (req, res) => {
 
       case "14":
         //ricerca info
-        //uso l'id 
+        //uso l'id
         const query14 = await connection.query(
           `SELECT Rating, Durata, Budget, Anno, CARA, Stagione, SerieTV FROM ProdCinema 
             WHERE Id = ? `,
@@ -424,6 +433,12 @@ app.post("/op/:opNum", async (req, res) => {
     res.status(500).json({ error: "Errore durante l'esecuzione della query" });
   }
 });
+
+app.get('/', (req,res) => {
+    console.log(__dirname);
+
+    res.sendFile(__dirname + '/../index.html');
+})
 
 app.listen(PORT, () => {
   console.log(`app sulla porta ${PORT}`);
