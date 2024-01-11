@@ -72,6 +72,20 @@ class ProdCinema {
   setSerieTVid(id) {
     this.serie_val = id;
   }
+
+  getProdArr(){
+      return [
+          this.durata_val,
+          this.budget_val,
+          this.anno_val,
+          this.titolo_val,
+          this.cara_val,
+          this.scadenza_val,
+          this.tipo_val,
+          this.stagione_val,
+          this.serie_val
+      ]
+  }
 }
 
 const prodCin_test = [
@@ -206,7 +220,7 @@ app.post("/op/:opNum", async (req, res) => {
         const query1_1 = await connection.query(
           `INSERT INTO ProdCinema(Id, Rating, Durata, Budget, Anno, Titolo, CARA, Scadenza, Tipo, Stagione, SerieTV) 
           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) `,
-          Object.values(prodCin_test[req_num])
+          prodCin_test[req_num].getProdArr()
         );
         res.send(query1_1);
 
