@@ -13,6 +13,9 @@
 	function createDB() {
 		const res = fetch('http://localhost:8001/createTables');
 	}
+	function deleteDB() {
+		const res = fetch('http://localhost:8001/dropTables');
+	}
 	function submit1() {
 		const res = fetch('http://localhost:8001/op/1');
 		if(res.ok && res.out) document.querySelector('#output').innerText = res.out;
@@ -71,15 +74,18 @@
 </script>
 
 <body>
-	<main class="flex flex-col justify-center">
+	<main class="mb-20 flex flex-col justify-center">
 		<h1 class="mx-auto my-8 text-5xl font-bold text-teal-500">RiverFlix</h1>
 
 		<h2 class="mx-auto my-4 text-3xl font-semibold">Creazione dello schema:</h2>
 
 		<div class="p-2 m-2">
 				<h3 class="mx-auto my-2 font-semibold text-xl">Creazione delle tabelle</h3>
-				<!-- <pre class="my-2"></pre> -->
 				<button id="creteDB" class="py-1 px-2 m-2 border-2 rounded-md" onclick="createDB()">esegui</button>
+		</div>
+		<div class="p-2 m-2">
+				<h3 class="mx-auto my-2 font-semibold text-xl">Rimozione delle tabelle</h3>
+				<button id="creteDB" class="py-1 px-2 m-2 border-2 rounded-md" onclick="deleteDB()">esegui</button>
 		</div>
 
 
@@ -241,8 +247,10 @@
 
 		</ol>
 
-		<div id="output">
-
+		<h2 class="mx-auto my-4 text-3xl font-semibold">Output:</h2>
+		
+		<div id="output" class="mx-8 p-4 bg-gray-200">
+			
 		</div>
 	</main>
 </body>
