@@ -112,10 +112,10 @@ class ProdCinema {
 }
 
 const prodCin_test = [
-  new ProdCinema(10140, 165000000, 2013, "Interstellar", CARA, null, FILM, null, null, null),
+  new ProdCinema(10140,165000000,2013,"Interstellar",CARA,null,FILM,null,null,null),
   new ProdCinema(1320, 2000000, 2005, "Pilot", CARA, null, SERIETV, 1, null, 1),
-  new ProdCinema(1320, 2000000, 2005, "Purple Giraffe", CARA, null, SERIETV, 1, null, 2),
-  new ProdCinema(1320, 2000000, 2005, "Sweet Taste of Liberty", CARA, null, SERIETV, 1, null, 3),
+  new ProdCinema(1320,2000000,2005,"Purple Giraffe",CARA,null,SERIETV,1,null,2),
+  new ProdCinema(1320,2000000,2005,"Sweet Taste of Liberty",CARA,null,SERIETV,1,null,3),
 ];
 
 const registi_query_1 = [
@@ -182,16 +182,16 @@ class User {
     this.tempoUtilizzo = 0;
   }
 
-  getArr() {
-    return [this.nome, this.account, this.eta, this.posizione, this.lingua, this.dispositivo, this.tempoUtilizzo]
+  getArr(){
+    return [this.nome,this.account, this.eta, this.posizione, this.lingua, this.dispositivo, this.tempoUtilizzo]
   }
 }
 
 const userTest = [
-  new User("Marco", "famiglia@fam.com", 28, "Roma", "italiano", "Laptop Dell XPS 13"),
-  new User("Federica", "famiglia@fam.com", 25, "Roma", "italiano", "Laptop Dell XPS 13"),
-  new User("Giuseppe", "giuse@gg.com", 44, "Bologna", "italiano", "Lenovo ThinkPad X1 Carbon"),
-  new User("Steve", "stevesting@random.com", 23, "NewYork", "americano", "MacBook Air"),
+  new User("Marco","famiglia@fam.com",28,"Roma","italiano","Laptop Dell XPS 13"),
+  new User("Federica","famiglia@fam.com",25,"Roma","italiano","Laptop Dell XPS 13"),
+  new User("Giuseppe","giuse@gg.com",44,"Bologna","italiano","Lenovo ThinkPad X1 Carbon"),
+  new User("Steve","stevesting@random.com",23,"NewYork","americano","MacBook Air"),
 ];
 
 //middleware
@@ -408,7 +408,7 @@ app.post("/op/:opNum", async (req, res) => {
 
       case "11":
         //consigliati
-        const query11 = await connection.promise().query(`SELECT P.Id, P.Titolo, P.Tipo FROM Visione as V JOIN ProdCinema as P ON V.ProdCin = P.Id JOIN (SELECT P.Genere as FavGen FROM Visione as V JOIN ProdCinema as P ON V.ProdCin = P.Id WHERE	V.Utente = 'Federica' AND V.Account = 'famiglia@fam.com' GROUP BY P.Genere ORDER BY COUNT(*) DESC LIMIT 1) t ON P.Genere = t.FavGen LIMIT 5 `,);
+        let [query11] = await connection.promise().query(`SELECT P.Id, P.Titolo, P.Tipo FROM Visione as V JOIN ProdCinema as P ON V.ProdCinema = P.Id JOIN Categoria as C ON P.Id = C.ProdCin JOIN (SELECT C.genere as FavGen FROM Visione as V JOIN Categoria as C ON V.ProdCinema = C.ProdCin WHERE V.Utente = 'Federica' AND V.Account = 'famiglia@fam.com' GROUP BY C.Genere ORDER BY COUNT(*) DESC LIMIT 1) t ON C.Genere = t.FavGen LIMIT 5` );
         res.json({ out: query11 });
         break;
 
