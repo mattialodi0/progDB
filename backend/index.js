@@ -444,7 +444,7 @@ app.post("/op/:opNum", async (req, res) => {
            FROM ProdCinema 
            WHERE Titolo = 'Interstellar'`,
         );
-        res.send(query15);
+        res.json({ out: query15 });
         break;
 
       default:
