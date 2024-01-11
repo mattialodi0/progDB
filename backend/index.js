@@ -3,6 +3,9 @@ const app = express();
 const cors = require("cors");
 const {createConnection} = require("mysql2");
 
+
+
+
 const PORT = 10000;
 const SERIETV = 'serie_tv';
 const FILM = 'film';
@@ -74,14 +77,15 @@ const prodCin_test = [
 app.use(express.json());
 // app.use(cors({ credentials: true, origin: 'http://localhost:4000' }));
 
-app.post("/createDB/:dbname", async (req, res) => {
-  const { dbname } = req.params;
-  try {
-    res.json();
-  } catch (e) {
-    res.status(500).json(e);
-  }
-});
+
+// app.post("/createDB/:dbname", async (req, res) => {
+//   const { dbname } = req.params;
+//   try {
+//     res.json();
+//   } catch (e) {
+//     res.status(500).json(e);
+//   }
+// });
 
 class connection {
     #_conn
@@ -92,10 +96,14 @@ class connection {
     async getConnection(){
         if(this.#_conn === null && this.#_conn === undefined){
             this.#_conn = await createConnection({
-                host: 'sql11.freesqldatabase.com',
-                database: 'sql11675959',
-                user: 'sql11675959',
-                password:'ancora non me la da zio pera'
+                // host: 'sql11.freesqldatabase.com',
+                // database: 'sql11675959',
+                // user: 'sql11675959',
+                // password:'ancora non me la da zio pera'
+                host: '93.65.85.208',
+                database: 'riverflix',
+                user: 'uprova',
+                password: '12345678'
             })
             await this.#_conn.connect()
         }
@@ -163,7 +171,7 @@ app.post("/op/:opNum", async (req, res) => {
             VALUES (?, ?) `, [idEpisodio_val, codicePersona_val]);
         res.send(query1_2);
 
-        const {idEpisodio_val};
+        // const {idEpisodio_val};
         const query1_3 =
             `INSERT INTO Parte(IdEpisodio) 
             VALUES (?) `;
