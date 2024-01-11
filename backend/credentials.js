@@ -3,7 +3,8 @@ module.exports.DBcredentials = {
     host: '192.168.1.5',
     database: 'riverflix',
     user: 'uprova',
-    password: '12345678'
+    password: '12345678',
+    connectionLimit: 100,
 }
 
 // host: 'sql11.freesqldatabase.com',
