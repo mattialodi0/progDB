@@ -460,12 +460,11 @@ app.post("/op/:opNum", async (req, res) => {
 
       case "11":
         //ricerca prodotto
-        //uso l'id
         const attributeName2 = req.body.attributeName;
         const query11 = await connection.query(
-          `SELECT P.Id, P.Titolo, P.Tipo 
-            FROM ProdCinema 
-            WHERE Id = ? `,
+          `SELECT Id, Titolo, Tipo 
+           FROM ProdCinema
+           WHERE Titolo = 'Interstellar'`,
           [req.body.userInput]
         );
         res.send(query11);
@@ -505,8 +504,9 @@ app.post("/op/:opNum", async (req, res) => {
         //ricerca info
         //uso l'id
         const query14 = await connection.query(
-          `SELECT Rating, Durata, Budget, Anno, CARA, Stagione, SerieTV FROM ProdCinema 
-            WHERE Id = ? `,
+          `SELECT Rating, Durata, Budget, Anno, CARA, Stagione, SerieTV 
+           FROM ProdCinema 
+           WHERE Titolo = 'Interstellar'`,
           [req.body.id]
         );
         res.send(query14);
