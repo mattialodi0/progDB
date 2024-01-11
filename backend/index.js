@@ -61,7 +61,6 @@ class ProdCinema {
   stagione_val;
   serie_val;
   num_episodio_val;
-  visual;
 
   constructor(
     durata,
