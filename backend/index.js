@@ -203,7 +203,7 @@ const userTest = [
 
 //middleware
 app.use(express.json());
-app.use(cors({ credentials: true, origin: "93.65.85.208" }));
+// app.use(cors({ credentials: true, origin: "93.65.85.208" }));
 
 // app.post("/createDB/:dbname", async (req, res) => {
 //   const { dbname } = req.params;
