@@ -232,7 +232,7 @@ const userTest = [
 
 //middleware
 app.use(express.json());
-app.use(cors({ credentials: true, origin: "93.65.85.208" }));
+
 
 // app.post("/createDB/:dbname", async (req, res) => {
 //   const { dbname } = req.params;
@@ -279,13 +279,6 @@ app.post("/createTables", async (req, res) => {
   try {
     let conn = await connect.getConnection();
 
-    //Clear DB
-
-        console.log("pulizia db ...")
-        for (let table_name of TABLES_NAME){
-            await conn.promise().query(`DROP TABLE ${table_name}`);
-        }
-
     console.log("inserimento schemi ...");
     for (let query of CREATE_QUERIES) {
       let result = await conn.promise().query(query);
@@ -293,8 +286,25 @@ app.post("/createTables", async (req, res) => {
         result[0].serverStatus === 2 ? "inserito con successo" : "errore"
       );
     }
-    console.log("finito. Schemi inseriti");
-    res.send(true);
+
+    res.json({out:"Schemi inseriti"});
+  } catch (err) {
+    console.log(err);
+    res.status(400).json(err);
+  }
+});
+
+app.post("/deleteTables", async (req, res) => {
+  try {
+    let conn = await connect.getConnection();
+
+
+        console.log("pulizia db ...")
+        for (let table_name of TABLES_NAME){
+            await conn.promise().query(`DROP TABLE *`);
+        }
+
+    res.json({out:"Schemi rimossi"});
   } catch (err) {
     console.log(err);
     res.status(400).json(err);
@@ -494,12 +504,11 @@ app.post("/op/:opNum", async (req, res) => {
 
       case "11":
         //ricerca prodotto
-        //uso l'id
         const attributeName2 = req.body.attributeName;
         const query11 = await connection.query(
-          `SELECT P.Id, P.Titolo, P.Tipo 
-            FROM ProdCinema 
-            WHERE Id = ? `,
+          `SELECT Id, Titolo, Tipo 
+           FROM ProdCinema
+           WHERE Titolo = 'Interstellar'`,
           [req.body.userInput]
         );
         res.send(query11);
@@ -539,8 +548,9 @@ app.post("/op/:opNum", async (req, res) => {
         //ricerca info
         //uso l'id
         const query14 = await connection.query(
-          `SELECT Rating, Durata, Budget, Anno, CARA, Stagione, SerieTV FROM ProdCinema 
-            WHERE Id = ? `,
+          `SELECT Rating, Durata, Budget, Anno, CARA, Stagione, SerieTV 
+           FROM ProdCinema 
+           WHERE Titolo = 'Interstellar'`,
           [req.body.id]
         );
         res.send(query14);

@@ -13,60 +13,79 @@
 	function createDB() {
 		const res = fetch('http://localhost:8001/createTables');
 	}
+	function deleteDB() {
+		const res = fetch('http://localhost:8001/dropTables');
+	}
 	function submit1() {
 		const res = fetch('http://localhost:8001/op/1');
+		if(res.ok && res.out) document.querySelector('#output').innerText = res.out;
 	}
 	function submit2() {
 		const res = fetch('http://localhost:8001/op/2');
+		if(res.ok && res.out) document.querySelector('#output').innerText = res.out;
 	}
 	function submit3() {
 		const res = fetch('http://localhost:8001/op/3');
+		if(res.ok && res.out) document.querySelector('#output').innerText = res.out;
 	}
 	function submit4() {
 		const res = fetch('http://localhost:8001/op/4');
+		if(res.ok && res.out) document.querySelector('#output').innerText = res.out;
 	}
 	function submit5() {
 		const res = fetch('http://localhost:8001/op/5');
+		if(res.ok && res.out) document.querySelector('#output').innerText = res.out;
 	}
 	function submit6() {
 		const res = fetch('http://localhost:8001/op/6');
+		if(res.ok && res.out) document.querySelector('#output').innerText = res.out;
 	}
 	function submit7() {
 		const res = fetch('http://localhost:8001/op/7');
+		if(res.ok && res.out) document.querySelector('#output').innerText = res.out;
 	}
 	function submit8() {
 		const res = fetch('http://localhost:8001/op/8');
+		if(res.ok && res.out) document.querySelector('#output').innerText = res.out;
 	}
 	function submit9() {
 		const res = fetch('http://localhost:8001/op/9');
+		if(res.ok && res.out) document.querySelector('#output').innerText = res.out;
 	}
 	function submit10() {
 		const res = fetch('http://localhost:8001/op/10');
+		if(res.ok && res.out) document.querySelector('#output').innerText = res.out;
 	}
 	function submit11() {
 		const res = fetch('http://localhost:8001/op/11');
+		if(res.ok && res.out) document.querySelector('#output').innerText = res.out;
 	}
 	function submit12() {
 		const res = fetch('http://localhost:8001/op/12');
 	}
 	function submit13() {
 		const res = fetch('http://localhost:8001/op/13');
+		if(res.ok && res.out) document.querySelector('#output').innerText = res.out;
 	}
 	function submit14() {
 		const res = fetch('http://localhost:8001/op/14');
+		if(res.ok && res.out) document.querySelector('#output').innerText = res.out;
 	}
 </script>
 
 <body>
-	<main class="flex flex-col justify-center">
+	<main class="mb-20 flex flex-col justify-center">
 		<h1 class="mx-auto my-8 text-5xl font-bold text-teal-500">RiverFlix</h1>
 
 		<h2 class="mx-auto my-4 text-3xl font-semibold">Creazione dello schema:</h2>
 
 		<div class="p-2 m-2">
 				<h3 class="mx-auto my-2 font-semibold text-xl">Creazione delle tabelle</h3>
-				<!-- <pre class="my-2"></pre> -->
 				<button id="creteDB" class="py-1 px-2 m-2 border-2 rounded-md" onclick="createDB()">esegui</button>
+		</div>
+		<div class="p-2 m-2">
+				<h3 class="mx-auto my-2 font-semibold text-xl">Rimozione delle tabelle</h3>
+				<button id="creteDB" class="py-1 px-2 m-2 border-2 rounded-md" onclick="deleteDB()">esegui</button>
 		</div>
 
 
@@ -161,16 +180,26 @@
 			</li>
 
 			<li class="p-2 m-2">
-				<h3 class="mx-auto my-2 font-semibold text-xl">Ricerca top 10</h3>
+				<h3 class="mx-auto my-2 font-semibold text-xl">Ricerca top visualizzati</h3>
+				<pre class="my-2">	Query:
+	SELECT Id, Titolo, Tipo
+	FROM ProdCinema
+	ORDER BY COUNT(Visual) DESC
+	LIMIT 5</pre>
+				<button class="py-1 px-2 m-2 border-2 rounded-md" onclick="submit9()">esegui</button>
+			</li>
+
+			<li class="p-2 m-2">
+				<h3 class="mx-auto my-2 font-semibold text-xl">Ricerca top 10 mensile</h3>
 				<pre class="my-2">	Query:
 	SELECT P.Id, P.Titolo, P.Tipo
 	FROM ProdCinema as P JOIN Visione as V on 
 	P.Id = V.ProdCinema
-	WHERE V.Data > DATE_ADD((CAST(GETDATE() AS Date) INTERVAL -1 MONTH)
+	WHERE V.Data > DATE_ADD((CAST(GETDATE() AS Date) INTERVAL -1 MONTH))
 	GROUP BY V.ProdCinema
 	ORDER BY COUNT(V.ProdCinema) DESC
 	LIMIT 10</pre>
-				<button class="py-1 px-2 m-2 border-2 rounded-md" onclick="submit9()">esegui</button>
+				<button class="py-1 px-2 m-2 border-2 rounded-md" onclick="submit10()">esegui</button>
 			</li>
 
 			<li class="p-2 m-2">
@@ -188,16 +217,16 @@
 		LIMIT 1
 	) t ON P.Genere = t.FavGen
 	LIMIT 5</pre>
-				<button class="py-1 px-2 m-2 border-2 rounded-md" onclick="submit10()">esegui</button>
+				<button class="py-1 px-2 m-2 border-2 rounded-md" onclick="submit11()">esegui</button>
 			</li>
 
 			<li class="p-2 m-2">
 				<h3 class="mx-auto my-2 font-semibold text-xl">Ricerca prodotto</h3>
 				<pre class="my-2">	Query:
-	SELECT P.Id, P.Titolo, P.Tipo
+	SELECT Id, Titolo, Tipo
 	FROM ProdCinema
-	WHERE</pre>
-				<button class="py-1 px-2 m-2 border-2 rounded-md" onclick="submit11()">esegui</button>
+	WHERE Titolo = 'Interstellar'</pre>
+				<button class="py-1 px-2 m-2 border-2 rounded-md" onclick="submit12()">esegui</button>
 			</li>
 			
 			<li class="p-2 m-2">
@@ -205,7 +234,7 @@
 				<pre class="my-2">	Query:
 	INSERT INTO Visionato (Utente, Account, ProdCinema, Watchtime)
 	VALUES (...)</pre>
-				<button class="py-1 px-2 m-2 border-2 rounded-md" onclick="submit12()">esegui</button>
+				<button class="py-1 px-2 m-2 border-2 rounded-md" onclick="submit13()">esegui</button>
 			</li>
 
 			<li class="p-2 m-2">
@@ -214,7 +243,7 @@
 	INSERT INTO Recensione (Utente, Account, ProdCinema,
 	Gradimento)
 	VALUES (...)</pre>
-				<button class="py-1 px-2 m-2 border-2 rounded-md" onclick="submit13()">esegui</button>
+				<button class="py-1 px-2 m-2 border-2 rounded-md" onclick="submit14()">esegui</button>
 			</li>
 
 			<li class="p-2 m-2">
@@ -222,30 +251,17 @@
 				<pre class="my-2">	Query:
 	SELECT Rating, Durata, Budget, Anno, CARA, Stagione, SerieTV
 	FROM ProdCinema
-	WHERE ...</pre>
-				<button class="py-1 px-2 m-2 border-2 rounded-md" onclick="submit14()">esegui</button>
+	WHERE Titolo = 'Interstellar'</pre>
+				<button class="py-1 px-2 m-2 border-2 rounded-md" onclick="submit15()">esegui</button>
 			</li>
 
 		</ol>
+
+		<h2 class="mx-auto my-4 text-3xl font-semibold">Output:</h2>
+		
+		<div id="output" class="mx-8 p-4 bg-gray-200">
+			
+		</div>
 	</main>
-
-
 </body>
-
-<!-- <script defer>
-	for(let i=0; i<14; i++) {
-		let el = document.querySelectorAll("li")[i]
-		el.addEventListener('click', () => submit(i))
-		console.log('a')
-	}
-	let el = document.querySelectorAll("#createDB")
-	el.addEventListener('click', () => {
-		const res = fetch('http://localhost:8001/createDB/riverflex');
-	})
-
-	function submit (i) {
-		const res = fetch('http://localhost:8001/op/'+ i );
-	}
-</script> -->
-
 </html>
