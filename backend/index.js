@@ -112,43 +112,10 @@ class ProdCinema {
 }
 
 const prodCin_test = [
-  new ProdCinema(
-    10140,
-    165000000,
-    2013,
-    "Interstellar",
-    CARA,
-    null,
-    FILM,
-    null,
-    null,
-    null
-  ),
+  new ProdCinema(10140,165000000,2013,"Interstellar",CARA,null,FILM,null,null,null),
   new ProdCinema(1320, 2000000, 2005, "Pilot", CARA, null, SERIETV, 1, null, 1),
-  new ProdCinema(
-    1320,
-    2000000,
-    2005,
-    "Purple Giraffe",
-    CARA,
-    null,
-    SERIETV,
-    1,
-    null,
-    2
-  ),
-  new ProdCinema(
-    1320,
-    2000000,
-    2005,
-    "Sweet Taste of Liberty",
-    CARA,
-    null,
-    SERIETV,
-    1,
-    null,
-    3
-  ),
+  new ProdCinema(1320,2000000,2005,"Purple Giraffe",CARA,null,SERIETV,1,null,2),
+  new ProdCinema(1320,2000000,2005,"Sweet Taste of Liberty",CARA,null,SERIETV,1,null,3),
 ];
 
 const registi_query_1 = [
@@ -221,38 +188,10 @@ class User {
 }
 
 const userTest = [
-  new User(
-    "Marco",
-    "famiglia@fam.com",
-    28,
-    "Roma",
-    "italiano",
-    "Laptop Dell XPS"
-  ),
-  new User(
-    "Federica",
-    "famiglia@fam.com",
-    25,
-    "Roma",
-    "italiano",
-    "Laptop Dell XPS"
-  ),
-  new User(
-    "Giuseppe",
-    "stevesting@random.com",
-    44,
-    "Bologna",
-    "italiano",
-    "Lenovo ThinkPad X1"
-  ),
-  new User(
-    "Steve",
-    "stevesting@random.com",
-    23,
-    "NewYork",
-    "americano",
-    "MacBook Air"
-  ),
+  new User("Marco","famiglia@fam.com",28,"Roma","italiano","Laptop Dell XPS 13"),
+  new User("Federica","famiglia@fam.com",25,"Roma","italiano","Laptop Dell XPS 13"),
+  new User("Giuseppe","giuse@gg.com",44,"Bologna","italiano","Lenovo ThinkPad X1 Carbon"),
+  new User("Steve","stevesting@random.com",23,"NewYork","americano","MacBook Air"),
 ];
 
 //middleware
@@ -356,7 +295,7 @@ app.post("/op/:opNum", async (req, res) => {
 
         await connection.promise().query(
           `INSERT INTO Personale(Codice, Nome, DataNasc, Nazionalità, Compito)
-                    VALUES (?, ?, ?, ?, ?), (?, ?, ?, ?, ?)`,
+            VALUES (?, ?, ?, ?, ?), (?, ?, ?, ?, ?)`,
           [
             registi_query_1[req_num],
             "Pippo",
@@ -407,23 +346,10 @@ app.post("/op/:opNum", async (req, res) => {
         res.send(query2);
         break;
 
-      case "3":
-        let [result] = await connection.promise().query(`SELECT Id FROM ProdCinema where Titolo = ?`, [prodCin_test[req_num].getTitle(),]);
-
-        let id = result[0]?.Id;
-
-        if (!id) {
-          res.send("Prodotto non ancora inserito");
-          break;
-        }
-
-        await connection
-          .promise()
-          .query(`UPDATE ProdCinema SET Scadenza = ? WHERE Id = ? `, [
-            "2025-01-01",
-            id,
-          ]);
-
+        case "3":
+          //aggiornamento prodotto
+          let query3 = await connection.promise().query(`UPDATE ProdCinema SET Scadenza = '2025-01-01 WHERE  Titolo = 'Interstellar'`);
+          res.send(query3);
         break;
 
       case "4":
@@ -443,14 +369,20 @@ app.post("/op/:opNum", async (req, res) => {
 
       case "5":
         //inserimento account
-        await connection.promise().query(
-          `INSERT INTO Account(Mail, Password, Abbonamento, DataCreaz) VALUES (?, ?, ?, ?), (?, ?, ?, ?), (?, ?, ?, ?) `,
-            account_test[0].getArr().concat(account_test[1].getArr()).concat(account_test[2].getArr()));
+        const query5 = await connection.promise().query(
+          `INSERT INTO Account(Mail, Psw, Abbonamento, DataCreaz) 
+           VALUES ("famiglia@fam.com","12345678","mensile","2025-01-01"), ("stevesting@random.com","ciaociao","annuale","2022-10-01"), ("giuse@gg.com", "123stella","annuale","2020-08-23")`);
+        res.send(query5);
         break;
 
       case "6":
         //cambio abbonamento
-        await connection.promise().query(`UPDATE Account SET Abbonamento = 'annuale PRO' WHERE Mail = 'famiglia@fam.com' `);
+        const query6 = await connection.promise().query(
+          `UPDATE Account 
+           SET Abbonamento = 'annuale PRO'
+           WHERE Mail = 'famiglia@fam.com'`
+        );
+        res.send(query6);
         break;
 
       case "7":
