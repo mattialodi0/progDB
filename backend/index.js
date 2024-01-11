@@ -7,7 +7,7 @@ const cred = require("./credentials.js").DBcredentials;
 const PORT = 10000;
 const SERIETV = "serie_tv";
 const FILM = "film";
-const CARA = 'PG';
+const CARA = "PG";
 const TABLES_NAME = [
   "DaVedere",
   "InVisione",
@@ -27,7 +27,7 @@ const CREATE_QUERIES = [
   `CREATE TABLE IF NOT EXISTS SerieTV(Id MEDIUMINT UNSIGNED not NULL AUTO_INCREMENT,Titolo VARCHAR(30) not NULL,NStagioni SMALLINT not NULL,PRIMARY KEY (Id))`,
   `CREATE TABLE IF NOT EXISTS ProdCinema(Id MEDIUMINT UNSIGNED not NULL AUTO_INCREMENT, Rating SMALLINT DEFAULT 0, Durata MEDIUMINT not NULL, 
         Budget INT not NULL, Anno YEAR(4), Titolo VARCHAR(30) not NULL, Cara ENUM('G','PG','PG-13','R','NC-17'), 
-        Scadenza DATE, Tipo ENUM('serie_tv','film') not NULL, Stagione SMALLINT,  Serietv MEDIUMINT UNSIGNED, NumEpisodio SMALLINT,
+        Scadenza DATE, Tipo ENUM('serie_tv','film') not NULL, Stagione SMALLINT,  Serietv MEDIUMINT UNSIGNED, NumEpisodio SMALLINT, Visual INT DEFAULT 0,
         PRIMARY KEY (Id), FOREIGN KEY (Serietv) REFERENCES SerieTV(Id), CHECK(Rating >= 0 AND Rating <= 10))`,
   `CREATE TABLE IF NOT EXISTS Personale(Codice CHAR(16) not NULL, Nome VARCHAR(20) not NULL, DataNasc DATE, Nazionalità VARCHAR(30), Compito VARCHAR(20), PRIMARY KEY(Codice))`,
   `CREATE TABLE IF NOT EXISTS Account(Mail VARCHAR(40) not NULL, Password VARCHAR(100) not NULL, Abbonamento ENUM('mensile', 'semestrale', 'annuale', 'annuale PRO') not NULL,
@@ -61,6 +61,7 @@ class ProdCinema {
   stagione_val;
   serie_val;
   num_episodio_val;
+  visual;
 
   constructor(
     durata,
@@ -74,7 +75,7 @@ class ProdCinema {
     serie,
     num_episodio
   ) {
-      this.id = null;
+    this.id = null;
     this.durata_val = durata;
     this.budget_val = budget;
     this.anno_val = anno;
@@ -84,16 +85,15 @@ class ProdCinema {
     this.tipo_val = tipo;
     this.stagione_val = stagione;
     this.serie_val = serie;
-    this.num_episodio_val = num_episodio
+    this.num_episodio_val = num_episodio;
   }
 
   setSerieTVid(id) {
     this.serie_val = id;
   }
 
-
-  getTitle(){
-      return this.titolo_val;
+  getTitle() {
+    return this.titolo_val;
   }
 
   getProdArr() {
@@ -107,7 +107,7 @@ class ProdCinema {
       this.tipo_val,
       this.stagione_val,
       this.serie_val,
-        this.num_episodio_val
+      this.num_episodio_val,
     ];
   }
 }
@@ -121,9 +121,9 @@ const prodCin_test = [
     CARA,
     null,
     FILM,
-     null,
     null,
-      null
+    null,
+    null
   ),
   new ProdCinema(1320, 2000000, 2005, "Pilot", CARA, null, SERIETV, 1, null, 1),
   new ProdCinema(
@@ -135,7 +135,8 @@ const prodCin_test = [
     null,
     SERIETV,
     1,
-    null, 2
+    null,
+    2
   ),
   new ProdCinema(
     1320,
@@ -146,26 +147,39 @@ const prodCin_test = [
     null,
     SERIETV,
     1,
-    null, 3
+    null,
+    3
   ),
 ];
 
 const registi_query_1 = [
-    'regista1',
-    'regista2',
-    'regista3',
-    'regista4',
-    'regista5'
-]
+  "regista1",
+  "regista2",
+  "regista3",
+  "regista4",
+  "regista5",
+];
 
-const attori_query_1 = [
-    'attore1',
-    'attore2',
-    'attore3',
-    'attore4',
-    'attore5'
-]
+const attori_query_1 = ["attore1", "attore2", "attore3", "attore4", "attore5"];
 
+class Account {
+  mail;
+  password;
+  abbonamento;
+  dataCreaz;
+  constructor(mail, password, abbonamento, dataCreaz) {
+    this.mail = mail;
+    this.password = password;
+    this.abbonamento = abbonamento;
+    this.dataCreaz = dataCreaz;
+  }
+}
+
+const account_test = [
+  new Account("famiglia@fam.com", "12345678", "mensile", "2024-01-07"),
+  new Account("stevesting@random.com", "ciaociao", "annuale", "2022-10-01"),
+  new Account("giuse@gg.com", "123stella", "annuale", "2020-08-23"),
+];
 
 class User {
   nome;
@@ -233,7 +247,6 @@ const userTest = [
 //middleware
 app.use(express.json());
 
-
 // app.post("/createDB/:dbname", async (req, res) => {
 //   const { dbname } = req.params;
 //   try {
@@ -287,7 +300,7 @@ app.post("/createTables", async (req, res) => {
       );
     }
 
-    res.json({out:"Schemi inseriti"});
+    res.json({ out: "Schemi inseriti" });
   } catch (err) {
     console.log(err);
     res.status(400).json(err);
@@ -298,13 +311,12 @@ app.post("/deleteTables", async (req, res) => {
   try {
     let conn = await connect.getConnection();
 
+    console.log("pulizia db ...");
+    for (let table_name of TABLES_NAME) {
+      await conn.promise().query(`DROP TABLE *`);
+    }
 
-        console.log("pulizia db ...")
-        for (let table_name of TABLES_NAME){
-            await conn.promise().query(`DROP TABLE *`);
-        }
-
-    res.json({out:"Schemi rimossi"});
+    res.json({ out: "Schemi rimossi" });
   } catch (err) {
     console.log(err);
     res.status(400).json(err);
@@ -320,16 +332,15 @@ app.get("/table/:tablename", async (req, res) => {
   }
 });
 
-//!da controllare 1, 3, 8, 11, 14
 app.post("/op/:opNum", async (req, res) => {
   let connection = await connect.getConnection();
   const { opNum } = req.params;
 
   try {
-      const req_num = req.body.product_number;
+    const req_num = req.body.product_number;
 
     switch (opNum) {
-        case "1":
+      case "1":
         //inserimento prodotto
 
         const [query1_1] = await connection.promise().query(
@@ -342,35 +353,46 @@ app.post("/op/:opNum", async (req, res) => {
 
         // inserimento personale
 
-            await connection.promise().query(
-                `INSERT INTO Personale(Codice, Nome, DataNasc, Nazionalità, Compito)
+        await connection.promise().query(
+          `INSERT INTO Personale(Codice, Nome, DataNasc, Nazionalità, Compito)
                     VALUES (?, ?, ?, ?, ?), (?, ?, ?, ?, ?)`,
-                [registi_query_1[req_num], 'Pippo', '1978-10-08', 'francese','Regista', attori_query_1[req_num], 'Francesco', '1988-06-18', 'americano','Attore']
-            )
+          [
+            registi_query_1[req_num],
+            "Pippo",
+            "1978-10-08",
+            "francese",
+            "Regista",
+            attori_query_1[req_num],
+            "Francesco",
+            "1988-06-18",
+            "americano",
+            "Attore",
+          ]
+        );
 
-            //inserimento nella relazione
+        //inserimento nella relazione
         await connection.promise().query(
           `INSERT INTO Creazione(ProdCin, Personale) 
             VALUES (?, ?), (?,?) `,
-            [prod_id, registi_query_1[req_num], prod_id, attori_query_1[req_num]]
+          [prod_id, registi_query_1[req_num], prod_id, attori_query_1[req_num]]
         );
 
         await connection.promise().query(
           `INSERT INTO Parte(ProdCinema, Attore, Ruolo) 
             VALUES (?, ?, ?) `,
-          [prod_id, attori_query_1[req_num], 'Cane']
+          [prod_id, attori_query_1[req_num], "Cane"]
         );
 
         await connection.promise().query(
           `INSERT INTO Categoria(ProdCin, Genere) 
             VALUES (?, ?) `,
-          [prod_id, 'Commedia']
+          [prod_id, "Commedia"]
         );
 
         await connection.promise().query(
           `INSERT INTO Ambientazione(ProdCin, Location) 
             VALUES (?, ?) `,
-          [prod_id, 'Marte']
+          [prod_id, "Marte"]
         );
 
         break;
@@ -384,25 +406,32 @@ app.post("/op/:opNum", async (req, res) => {
         res.send(query2);
         break;
 
-        case "3":
+      case "3":
+        let [result] = await connection
+          .promise()
+          .query(`SELECT Id FROM ProdCinema where Titolo = ?`, [
+            prodCin_test[req_num].getTitle(),
+          ]);
 
-            let [result] = await connection.promise().query(
-                `SELECT Id FROM ProdCinema where Titolo = ?`, [prodCin_test[req_num].getTitle()])
+        let id = result[0]?.Id;
 
-            let id = result[0]?.Id;
+        if (!id) {
+          res.send("Prodotto non ancora inserito");
+          break;
+        }
 
-            if(!id){
-                res.send('Prodotto non ancora inserito');
-                break;
-            }
-
-        await connection.promise().query(`UPDATE ProdCinema SET Scadenza = ? WHERE Id = ? `,['2025-01-01', id]);
+        await connection
+          .promise()
+          .query(`UPDATE ProdCinema SET Scadenza = ? WHERE Id = ? `, [
+            "2025-01-01",
+            id,
+          ]);
 
         break;
 
       case "4":
         //aggiornamento rating
-        const query4 = await connection.query(
+        const query4 = await connection.promise().query(
           `UPDATE ProdCinema 
             SET Rating = t.meanR 
             FROM 
@@ -417,14 +446,22 @@ app.post("/op/:opNum", async (req, res) => {
 
       case "5":
         //inserimento account
-        const query5 = await connection.query(
+        const query5 = await connection.promise().query(
           `INSERT INTO Account(Mail, Psw, Abbonamento, DataCreaz) 
-            VALUES (?, ?, ?) `,
+            VALUES (?, ?, ?), (?, ?, ?), (?, ?, ?) `,
           [
-            req.body.mail,
-            req.body.psw,
-            req.body.abbonamento,
-            req.body.dataCreaz,
+            "famiglia@fam.com",
+            "12345678",
+            "mensile",
+            "2025-01-01",
+            "stevesting@random.com",
+            "ciaociao",
+            "annuale",
+            "2022-10-01",
+            "giuse@gg.com",
+            "123stella",
+            "annuale",
+            "2020-08-23",
           ]
         );
         res.send(query5);
@@ -432,11 +469,10 @@ app.post("/op/:opNum", async (req, res) => {
 
       case "6":
         //cambio abbonamento
-        const query6 = await connection.query(
+        const query6 = await connection.promise().query(
           `UPDATE Account 
-            SET Abbonamento = ? 
-            WHERE Mail = ? `,
-          [req.body.abbonamento, req.body.mail]
+            SET Abbonamento = 'annuale PRO'
+            WHERE Mail = famiglia@fam.com  `
         );
         res.send(query6);
         break;
@@ -445,8 +481,7 @@ app.post("/op/:opNum", async (req, res) => {
         //rimozione account
         const query7 = await connection.query(
           `DELETE FROM Account 
-            WHERE Mail = ? `,
-          [req.body.mail]
+            WHERE Mail = giuse@gg.com `
         );
         res.send(query7);
         break;
@@ -454,7 +489,7 @@ app.post("/op/:opNum", async (req, res) => {
       case "8":
         //inserimento utente
         //to check
-        const query8 = await connection.query(
+        const query8 = await connection.promise().query(
           `INSERT INTO Utente(Nome, Account, Età, Posizione, Ling, Disp, TempoUtilizzo) 
             VALUES (?, ?, ?, ?, ?, ?, ?) `,
           [
@@ -471,24 +506,22 @@ app.post("/op/:opNum", async (req, res) => {
         break;
 
       case "9":
-        //top 10
-        const query9 = await connection.query(
-          `SELECT P.Id, P.Titolo, P.Tipo 
-            FROM ProdCinema as P JOIN Visione as V on P.Id = V.ProdCinema 
-            WHERE V.Data > DATE_ADD((CAST(GETDATE() AS Date) INTERVAL -1 MONTH) 
-            GROUP BY V.ProdCinema 
-            ORDER BY COUNT(V.ProdCinema) DESC 
-            LIMIT 10  `
+        //top 10 di sempre
+        const query9 = await connection.promise().query(
+          `SELECT Id, Titolo, Tipo
+          FROM ProdCinema
+          ORDER BY COUNT(Visual) DESC
+          LIMIT 10`
         );
         res.send(query9);
 
         break;
 
       case "10":
-        //consigliati
-        const query10 = await connection.query(
+        //top 10 mensile
+        const query10 = await connection.promise().query(
           `SELECT P.Id, P.Titolo, P.Tipo 
-            FROM Visioni as V JOIN ProdCinema as P 
+            FROM Visione as V JOIN ProdCinema as P 
             ON V.ProdCin = P.Id JOIN (
                 SELECT P.Genere as FavGen 
                 FROM Visione as V JOIN ProdCinema as P ON V.ProdCin = P.Id 
@@ -503,20 +536,37 @@ app.post("/op/:opNum", async (req, res) => {
         break;
 
       case "11":
-        //ricerca prodotto
-        const attributeName2 = req.body.attributeName;
-        const query11 = await connection.query(
-          `SELECT Id, Titolo, Tipo 
-           FROM ProdCinema
-           WHERE Titolo = 'Interstellar'`,
-          [req.body.userInput]
+        //consigliati
+        const query11 = await connection.promise().query(
+          `SELECT P.Id, P.Titolo, P.Tipo 
+              FROM Visione as V JOIN ProdCinema as P 
+              ON V.ProdCin = P.Id JOIN (
+                  SELECT P.Genere as FavGen 
+                  FROM Visione as V JOIN ProdCinema as P ON V.ProdCin = P.Id 
+                  WHERE	V.Utente = ... AND V.Account = ... 
+                  GROUP BY P.Genere 
+                  ORDER BY COUNT(*) DESC 
+                  LIMIT 1
+              ) t ON P.Genere = t.FavGen
+              LIMIT 5 `
         );
         res.send(query11);
         break;
 
       case "12":
+        //ricerca prodotto
+        const query12 = await connection.promise().query(
+          `SELECT Id, Titolo, Tipo 
+           FROM ProdCinema
+           WHERE Titolo = 'Interstellar'`,
+          []
+        );
+        res.send(query12);
+        break;
+
+      case "13":
         //inserimento visione
-        const query12 = await connection.query(
+        const query13 = await connection.promise().query(
           `INSERT INTO Visionato(Utente, Account, ProdCinema, Watchtime) 
             VALUES (?, ?, ?, ?) `,
           [
@@ -526,12 +576,12 @@ app.post("/op/:opNum", async (req, res) => {
             req.body.watchtime,
           ]
         );
-        res.send(query12);
+        res.send(query13);
         break;
 
-      case "13":
+      case "14":
         //inserimento recensione
-        const query13 = await connection.query(
+        const query14 = await connection.promise().query(
           `INSERT INTO Recensione(Utente, Account, ProdCinema, Gradimento) 
             VALUES (?, ?, ?, ?) `,
           [
@@ -541,19 +591,19 @@ app.post("/op/:opNum", async (req, res) => {
             req.body.gradimento,
           ]
         );
-        res.send(query13);
+        res.send(query14);
         break;
 
-      case "14":
+      case "15":
         //ricerca info
         //uso l'id
-        const query14 = await connection.query(
+        const query15 = await connection.promise().query(
           `SELECT Rating, Durata, Budget, Anno, CARA, Stagione, SerieTV 
            FROM ProdCinema 
            WHERE Titolo = 'Interstellar'`,
           [req.body.id]
         );
-        res.send(query14);
+        res.send(query15);
         break;
 
       default:
