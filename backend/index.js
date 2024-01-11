@@ -364,18 +364,19 @@ app.post("/op/:opNum", async (req, res) => {
 
       case "7":
         //rimozione account
-        await connection.promise().query(`DELETE FROM Account WHERE Mail = 'giuse@gg.com' `);
+        await connection.promise().query(`DELETE FROM Account WHERE Mail = 'giuse@gg.com'`);
         res.json({ out: 'query 7 done' });
         break;
 
       case "8":
         //inserimento utente
-        //to check
-        let users = userTest[0].getArr().concat(userTest[1].getArr()).concat(userTest[2].getArr()).concat(userTest[3].getArr());
         const query8 = await connection.promise().query(
-          `INSERT INTO Utente(Nome, Account, Eta, Posizione, Ling, Dispositivo, TempoUtilizzo) VALUES (?, ?, ?, ?, ?, ?, ?), (?, ?, ?, ?, ?, ?, ?), (?, ?, ?, ?, ?, ?, ?), (?, ?, ?, ?, ?, ?, ?)`,
-          users
-        )
+          `INSERT INTO Utente(Nome, Account, Eta, Posizione, Ling, Dispositivo, TempoUtilizzo) 
+          VALUES ("Marco", "famiglia@fam.com", 28, "Roma", "italiano", "Laptop Dell XPS 13"),
+                 ("Federica", "famiglia@fam.com", 25, "Roma", "italiano", "Laptop Dell XPS 13"),
+                 ("Giuseppe", "giuse@gg.com", 44, "Bologna", "italiano", "Lenovo ThinkPad X1 Carbon"),
+                 ("Steve", "stevesting@random.com", 23, "NewYork", "americano", "MacBook Air")`
+        );
         res.json({ out: query8 });
         break;
 
@@ -386,7 +387,6 @@ app.post("/op/:opNum", async (req, res) => {
           FROM ProdCinema
           ORDER BY COUNT(Visual) DESC
           LIMIT 10`
-
         );
         res.json({ out: query9 });
         break;
