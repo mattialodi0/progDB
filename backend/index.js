@@ -216,20 +216,20 @@ class connection {
 
 const connect = new connection();
 
-app.get("/table/:tablename", async (req, res) => {
-  const { tablename } = req.params;
-  try {
-    let conn = await connect.getConnection();
-    let query = `SELECT * FROM ${tablename} WHERE 1`;
+// app.get("/table/:tablename", async (req, res) => {
+//   const { tablename } = req.params;
+//   try {
+//     let conn = await connect.getConnection();
+//     let query = `SELECT * FROM ${tablename} WHERE 1`;
 
-    const [results] = await conn.query(query);
+//     const [results] = await conn.query(query);
 
-    return results;
-  } catch (e) {
-    console.log(e);
-    res.status(400).json(e);
-  }
-});
+//     return results;
+//   } catch (e) {
+//     console.log(e);
+//     res.status(400).json(e);
+//   }
+// });
 
 app.post("/createTables", async (req, res) => {
   try {
@@ -263,14 +263,7 @@ app.post("/deleteTables", async (req, res) => {
   }
 });
 
-app.get("/table/:tablename", async (req, res) => {
-  const { tablename } = req.params;
-  try {
-    res.json();
-  } catch (e) {
-    res.status(500).json(e);
-  }
-});
+
 
 app.post("/op/:opNum", async (req, res) => {
   let connection = await connect.getConnection();

@@ -233,17 +233,17 @@
 			<li class="p-2 m-2">
 				<h3 class="mx-auto my-2 font-semibold text-xl">Ricerca consigliati</h3>
 				<pre class="my-2">	Query:
-	SELECT P.Id, P.Titolo, P.Tipo
-	FROM Visioni as V JOIN ProdCinema as P 
-	ON V.ProdCin = P.Id JOIN (
-		SELECT P.Genere as FavGen
-		FROM Visione as V JOIN ProdCinema as P 
-		ON V.ProdCin = P.Id
-		WHERE	V.Utente = ... AND V.Account = ...
-		GROUP BY P.Genere
-		ORDER BY COUNT(*) DESC
-		LIMIT 1
-	) t ON P.Genere = t.FavGen
+	SELECT P.Id, P.Titolo, P.Tipo 
+	FROM Visione as V JOIN ProdCinema as P ON V.ProdCinema = P.Id
+		JOIN Categoria as C ON P.Id = C.ProdCin JOIN (
+			SELECT C.genere as FavGen 
+			FROM Visione as V JOIN Categoria as C ON
+				V.ProdCinema = C.ProdCin 
+			WHERE V.Utente = 'Federica' AND V.Account =
+				'famiglia@fam.com' GROUP BY C.Genere 
+			ORDER BY COUNT(*) DESC 
+			LIMIT 1
+		) t ON C.Genere = t.FavGen 
 	LIMIT 5</pre>
 				<button class="py-1 px-2 m-2 border-2 rounded-md" onclick="submit11()">esegui</button>
 			</li>
