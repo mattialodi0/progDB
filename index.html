@@ -119,10 +119,12 @@
 		<ol class="list-decimal mx-8">
 			<li class="p-2 m-2">
 				<h3 class="mx-auto my-2 font-semibold text-xl">Inserimento prodotto</h3>
-				<pre class="my-2">	Query:
-	INSERT INTO ProdCinema (Id, Rating, Durata, Budget, Anno,
-	Titolo, CARA, Scadenza, Tipo, Stagione, SerieTV)
-	VALUES (...)
+				<pre class="my-2">Query:
+	INSERT INTO ProdCinema (Id, Rating, Durata, Budget, Anno, Titolo, CARA, Scadenza, Tipo, Stagione, SerieTV)
+	VALUES  (10140,165000000,2013,"Interstellar","PG",null,"film",null,null,null)
+			(1320,2000000,2005,"Pilot","PG",null,"serie_tv",1,null,1)
+			(1320,2000000,2005,"Purple Giraffe","PG",null,"serie_tv",1,null,2)
+			(1320,2000000,2005,"Sweet Taste of Liberty","PG",null,"serie_tv",1,null,3)
 
 	INSERT INTO Creazione()
 	VALUES ('idEpisodio' , 'codicePersona')
@@ -134,14 +136,13 @@
 	VALUES ('idEpisodio' , 'categoria')
 
 	INSERT INTO Ambientazione()
-	VALUES ('idEpisodio' , 'location')
-</pre>
+	VALUES ('idEpisodio' , 'location')</pre>
 				<button class="py-1 px-2 m-2 border-2 rounded-md" onclick="submit1()">esegui</button>
 			</li>
 
 			<li class="p-2 m-2">
 				<h3 class="mx-auto my-2 font-semibold text-xl">Rimozione prodotto</h3>
-				<pre class="my-2">	Query:
+				<pre class="my-2">Query:
 	DELETE FROM ProdCinema 
 	WHERE Scadenza &lt; CAST(GETDATE() AS Date)</pre>
 				<button class="py-1 px-2 m-2 border-2 rounded-md" onclick="submit2()">esegui</button>
@@ -149,16 +150,16 @@
 
 			<li class="p-2 m-2">
 				<h3 class="mx-auto my-2 font-semibold text-xl">Aggiornamento prodotto</h3>
-				<pre class="my-2">	Query:
-	UPDATE ProdCinema ()
-	SET ...
-	WHERE Id = ...</pre>
+				<pre class="my-2">Query:
+	UPDATE ProdCinema 
+	SET Scadenza = '2025-01-01 
+	WHERE  Titolo = 'Interstellar'</pre>
 				<button class="py-1 px-2 m-2 border-2 rounded-md" onclick="submit3()">esegui</button>
 			</li>
 
 			<li class="p-2 m-2">
 				<h3 class="mx-auto my-2 font-semibold text-xl">Aggiornamento rating</h3>
-				<pre class="my-2">	Query:
+				<pre class="my-2">Query:
 	UPDATE ProdCinema
 	SET Rating = t.meanR
 	FROM (
@@ -172,26 +173,28 @@
 
 			<li class="p-2 m-2">
 				<h3 class="mx-auto my-2 font-semibold text-xl">Inserimento account</h3>
-				<pre class="my-2">	Query:
-	INSERT INTO Account (Mail, Psw, Abbonamento, DataCreaz)
-	VALUES (...)</pre>
+				<pre class="my-2">Query:
+	INSERT INTO Account(Mail, Psw, Abbonamento, DataCreaz) 
+	VALUES  ("famiglia@fam.com","12345678","mensile","2025-01-01"), 
+			("stevesting@random.com","ciaociao","annuale","2022-10-01"),
+			("giuse@gg.com", "123stella","annuale","2020-08-23")</pre>
 				<button class="py-1 px-2 m-2 border-2 rounded-md" onclick="submit5()">esegui</button>
 			</li>
 			
 			<li class="p-2 m-2">
 				<h3 class="mx-auto my-2 font-semibold text-xl">Cambio abbonamento</h3>
-				<pre class="my-2">	Query:
-	UPDATE Account
-	SET Abbonamento = ''...''
-	WHERE Mail = ''...'</pre>
+				<pre class="my-2">Query:
+	UPDATE Account 
+	SET Abbonamento = 'annuale PRO'
+	WHERE Mail = 'famiglia@fam.com'</pre>
 				<button class="py-1 px-2 m-2 border-2 rounded-md" onclick="submit6()">esegui</button>
 			</li>
 
 			<li class="p-2 m-2">
 				<h3 class="mx-auto my-2 font-semibold text-xl">Rimozione account</h3>
-				<pre class="my-2">	Query:
-	DELETE FROM Account
-	WHERE Mail = ''...'</pre>
+				<pre class="my-2">Query:
+	DELETE FROM Account 
+	WHERE Mail = 'giuse@gg.com'</pre>
 				<button class="py-1 px-2 m-2 border-2 rounded-md" onclick="submit7()">esegui</button>
 			</li>
 			<li clas
