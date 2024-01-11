@@ -4,7 +4,7 @@ const cors = require("cors");
 const { createConnection } = require("mysql2");
 const cred = require("./credentials.js").DBcredentials;
 
-const PORT = 10000;
+const PORT = 8001;
 const SERIETV = "serie_tv";
 const FILM = "film";
 const CARA = "PG";
@@ -290,15 +290,13 @@ app.get("/table/:tablename", async (req, res) => {
 
 app.post("/createTables", async (req, res) => {
   try {
-    let conn = await connect.getConnection();
+    // let conn = await connect.getConnection();
 
-    console.log("inserimento schemi ...");
-    for (let query of CREATE_QUERIES) {
-      let result = await conn.promise().query(query);
-      console.log(
-        result[0].serverStatus === 2 ? "inserito con successo" : "errore"
-      );
-    }
+    // // console.log("inserimento schemi ...");
+    // for (let query of CREATE_QUERIES) {
+    //   let result = await conn.promise().query(query);
+    //   // console.log(result[0].serverStatus === 2 ? "inserito con successo" : "errore");
+    // }
 
     res.json({ out: "Schemi inseriti" });
   } catch (err) {

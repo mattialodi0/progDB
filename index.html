@@ -10,11 +10,15 @@
 </head>
 
 <script>
-	function createDB() {
-		const res = fetch('http://localhost:8001/createTables');
+	async function createDB() {
+		let res = await fetch('http://localhost:8001/createTables', { method:'POST'});
+		res = await res.json();
+		// console.log(await res.json())
+		if(res?.out) document.querySelector('#output').innerText = res.out;
 	}
 	function deleteDB() {
-		const res = fetch('http://localhost:8001/dropTables');
+		const res = fetch('http://localhost:8001/dropTables', { method:'POST'});
+		if(res.ok) document.querySelector('#output').innerText = res;
 	}
 	function submit1() {
 		const res = fetch('http://localhost:8001/op/1');
