@@ -180,16 +180,26 @@
 			</li>
 
 			<li class="p-2 m-2">
-				<h3 class="mx-auto my-2 font-semibold text-xl">Ricerca top 10</h3>
+				<h3 class="mx-auto my-2 font-semibold text-xl">Ricerca top visualizzati</h3>
+				<pre class="my-2">	Query:
+	SELECT Id, Titolo, Tipo
+	FROM ProdCinema
+	ORDER BY COUNT(Visual) DESC
+	LIMIT 5</pre>
+				<button class="py-1 px-2 m-2 border-2 rounded-md" onclick="submit9()">esegui</button>
+			</li>
+
+			<li class="p-2 m-2">
+				<h3 class="mx-auto my-2 font-semibold text-xl">Ricerca top 10 mensile</h3>
 				<pre class="my-2">	Query:
 	SELECT P.Id, P.Titolo, P.Tipo
 	FROM ProdCinema as P JOIN Visione as V on 
 	P.Id = V.ProdCinema
-	WHERE V.Data > DATE_ADD((CAST(GETDATE() AS Date) INTERVAL -1 MONTH)
+	WHERE V.Data > DATE_ADD((CAST(GETDATE() AS Date) INTERVAL -1 MONTH))
 	GROUP BY V.ProdCinema
 	ORDER BY COUNT(V.ProdCinema) DESC
 	LIMIT 10</pre>
-				<button class="py-1 px-2 m-2 border-2 rounded-md" onclick="submit9()">esegui</button>
+				<button class="py-1 px-2 m-2 border-2 rounded-md" onclick="submit10()">esegui</button>
 			</li>
 
 			<li class="p-2 m-2">
@@ -207,16 +217,16 @@
 		LIMIT 1
 	) t ON P.Genere = t.FavGen
 	LIMIT 5</pre>
-				<button class="py-1 px-2 m-2 border-2 rounded-md" onclick="submit10()">esegui</button>
+				<button class="py-1 px-2 m-2 border-2 rounded-md" onclick="submit11()">esegui</button>
 			</li>
 
 			<li class="p-2 m-2">
 				<h3 class="mx-auto my-2 font-semibold text-xl">Ricerca prodotto</h3>
 				<pre class="my-2">	Query:
-	SELECT P.Id, P.Titolo, P.Tipo
+	SELECT Id, Titolo, Tipo
 	FROM ProdCinema
-	WHERE</pre>
-				<button class="py-1 px-2 m-2 border-2 rounded-md" onclick="submit11()">esegui</button>
+	WHERE Titolo = 'Interstellar'</pre>
+				<button class="py-1 px-2 m-2 border-2 rounded-md" onclick="submit12()">esegui</button>
 			</li>
 			
 			<li class="p-2 m-2">
@@ -224,7 +234,7 @@
 				<pre class="my-2">	Query:
 	INSERT INTO Visionato (Utente, Account, ProdCinema, Watchtime)
 	VALUES (...)</pre>
-				<button class="py-1 px-2 m-2 border-2 rounded-md" onclick="submit12()">esegui</button>
+				<button class="py-1 px-2 m-2 border-2 rounded-md" onclick="submit13()">esegui</button>
 			</li>
 
 			<li class="p-2 m-2">
@@ -233,7 +243,7 @@
 	INSERT INTO Recensione (Utente, Account, ProdCinema,
 	Gradimento)
 	VALUES (...)</pre>
-				<button class="py-1 px-2 m-2 border-2 rounded-md" onclick="submit13()">esegui</button>
+				<button class="py-1 px-2 m-2 border-2 rounded-md" onclick="submit14()">esegui</button>
 			</li>
 
 			<li class="p-2 m-2">
@@ -241,8 +251,8 @@
 				<pre class="my-2">	Query:
 	SELECT Rating, Durata, Budget, Anno, CARA, Stagione, SerieTV
 	FROM ProdCinema
-	WHERE ...</pre>
-				<button class="py-1 px-2 m-2 border-2 rounded-md" onclick="submit14()">esegui</button>
+	WHERE Titolo = 'Interstellar'</pre>
+				<button class="py-1 px-2 m-2 border-2 rounded-md" onclick="submit15()">esegui</button>
 			</li>
 
 		</ol>
