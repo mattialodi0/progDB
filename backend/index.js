@@ -517,17 +517,14 @@ app.post("/op/:opNum", async (req, res) => {
       case "10":
         //top 10 mensile
         const query10 = await connection.promise().query(
-          `SELECT P.Id, P.Titolo, P.Tipo 
-            FROM Visione as V JOIN ProdCinema as P 
-            ON V.ProdCin = P.Id JOIN (
-                SELECT P.Genere as FavGen 
-                FROM Visione as V JOIN ProdCinema as P ON V.ProdCin = P.Id 
-                WHERE	V.Utente = ... AND V.Account = ... 
-                GROUP BY P.Genere 
-                ORDER BY COUNT(*) DESC 
-                LIMIT 1
-            ) t ON P.Genere = t.FavGen
-            LIMIT 5 `
+          `SELECT P.Id, P.Titolo, P.Tipo
+          FROM ProdCinema as P JOIN Visione as V on 
+          P.Id = V.ProdCinema
+          WHERE V.Data > DATE_ADD((CAST(GETDATE() AS Date) INTERVAL -1
+          MONTH)
+          GROUP BY V.ProdCinema
+          ORDER BY COUNT(V.ProdCinema) DESC
+          LIMIT 10 `
         );
         res.send(query10);
         break;
@@ -556,7 +553,6 @@ app.post("/op/:opNum", async (req, res) => {
           `SELECT Id, Titolo, Tipo 
            FROM ProdCinema
            WHERE Titolo = 'Interstellar'`,
-          []
         );
         res.send(query12);
         break;
@@ -595,10 +591,9 @@ app.post("/op/:opNum", async (req, res) => {
         //ricerca info
         //uso l'id
         const query15 = await connection.promise().query(
-          `SELECT Rating, Durata, Budget, Anno, CARA, Stagione, SerieTV 
+          `SELECT Rating, Durata, Budget, Anno, CARA, Stagione, SerieTV, Visual 
            FROM ProdCinema 
            WHERE Titolo = 'Interstellar'`,
-          [req.body.id]
         );
         res.send(query15);
         break;
