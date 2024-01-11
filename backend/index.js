@@ -266,7 +266,8 @@ app.post("/createTables", async (req, res) => {
         result[0].serverStatus === 2 ? "inserito con successo" : "errore"
       );
     }
-    console.log("finito. Schemi inseriti");
+
+    res.json({out:"Schemi inseriti"});
   } catch (err) {
     console.log(err);
     res.status(400).json(err);
