@@ -1,4 +1,5 @@
 const express = require("express");
+const path = require("path");
 const app = express();
 const cors = require("cors");
 const { createConnection } = require("mysql2");
@@ -454,7 +455,7 @@ app.post("/op/:opNum", async (req, res) => {
 
 app.get("/", (req, res) => {
   console.log(__dirname);
-  res.sendFile(__dirname + "/../index.html");
+  res.sendFile(path.join(__dirname, "/../index.html"));
 });
 
 app.listen(PORT, () => {
