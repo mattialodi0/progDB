@@ -274,6 +274,23 @@ app.post("/createTables", async (req, res) => {
   }
 });
 
+app.post("/deleteTables", async (req, res) => {
+  try {
+    let conn = await connect.getConnection();
+
+    
+        console.log("pulizia db ...")
+        for (let table_name of TABLES_NAME){
+            await conn.promise().query(`DROP TABLE *`);
+        }
+
+    res.json({out:"Schemi rimossi"});
+  } catch (err) {
+    console.log(err);
+    res.status(400).json(err);
+  }
+});
+
 app.get("/table/:tablename", async (req, res) => {
   const { tablename } = req.params;
   try {
@@ -525,9 +542,11 @@ app.post("/op/:opNum", async (req, res) => {
   }
 });
 
-app.get("/", (req, res) => {
-  console.log(__dirname);
 
+
+
+
+app.get("/", (req, res) => {
   res.sendFile(__dirname + "/../index.html");
 });
 
