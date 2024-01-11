@@ -112,10 +112,10 @@ class ProdCinema {
 }
 
 const prodCin_test = [
-  new ProdCinema(10140,165000000,2013,"Interstellar",CARA,null,FILM,null,null,null),
+  new ProdCinema(10140, 165000000, 2013, "Interstellar", CARA, null, FILM, null, null, null),
   new ProdCinema(1320, 2000000, 2005, "Pilot", CARA, null, SERIETV, 1, null, 1),
-  new ProdCinema(1320,2000000,2005,"Purple Giraffe",CARA,null,SERIETV,1,null,2),
-  new ProdCinema(1320,2000000,2005,"Sweet Taste of Liberty",CARA,null,SERIETV,1,null,3),
+  new ProdCinema(1320, 2000000, 2005, "Purple Giraffe", CARA, null, SERIETV, 1, null, 2),
+  new ProdCinema(1320, 2000000, 2005, "Sweet Taste of Liberty", CARA, null, SERIETV, 1, null, 3),
 ];
 
 const registi_query_1 = [
@@ -140,12 +140,12 @@ class Account {
     this.dataCreaz = dataCreaz;
   }
 
-  getArr(){
+  getArr() {
     return [
-        this.mail,
-        this.password,
-        this.abbonamento,
-        this.dataCreaz,
+      this.mail,
+      this.password,
+      this.abbonamento,
+      this.dataCreaz,
     ]
   }
 }
@@ -182,16 +182,16 @@ class User {
     this.tempoUtilizzo = 0;
   }
 
-  getArr(){
-    return [this.nome,this.account, this.eta, this.posizione, this.lingua, this.dispositivo, this.tempoUtilizzo]
+  getArr() {
+    return [this.nome, this.account, this.eta, this.posizione, this.lingua, this.dispositivo, this.tempoUtilizzo]
   }
 }
 
 const userTest = [
-  new User("Marco","famiglia@fam.com",28,"Roma","italiano","Laptop Dell XPS 13"),
-  new User("Federica","famiglia@fam.com",25,"Roma","italiano","Laptop Dell XPS 13"),
-  new User("Giuseppe","giuse@gg.com",44,"Bologna","italiano","Lenovo ThinkPad X1 Carbon"),
-  new User("Steve","stevesting@random.com",23,"NewYork","americano","MacBook Air"),
+  new User("Marco", "famiglia@fam.com", 28, "Roma", "italiano", "Laptop Dell XPS 13"),
+  new User("Federica", "famiglia@fam.com", 25, "Roma", "italiano", "Laptop Dell XPS 13"),
+  new User("Giuseppe", "giuse@gg.com", 44, "Bologna", "italiano", "Lenovo ThinkPad X1 Carbon"),
+  new User("Steve", "stevesting@random.com", 23, "NewYork", "americano", "MacBook Air"),
 ];
 
 //middleware
@@ -343,13 +343,13 @@ app.post("/op/:opNum", async (req, res) => {
           `DELETE FROM ProdCinema 
             WHERE Scadenza < CAST(GETDATE() AS Date)`
         );
-        res.send(query2);
+        res.json({ out: query2 });
         break;
 
-        case "3":
-          //aggiornamento prodotto
-          let query3 = await connection.promise().query(`UPDATE ProdCinema SET Scadenza = '2025-01-01 WHERE  Titolo = 'Interstellar'`);
-          res.send(query3);
+      case "3":
+        //aggiornamento prodotto
+        let query3 = await connection.promise().query(`UPDATE ProdCinema SET Scadenza = '2025-01-01 WHERE  Titolo = 'Interstellar'`);
+        res.json({ out: query3 });
         break;
 
       case "4":
@@ -364,7 +364,7 @@ app.post("/op/:opNum", async (req, res) => {
             ) t 
             WHERE Id = t.ProdCinema `
         );
-        res.send(query4);
+        res.json({ out: query4 });
         break;
 
       case "5":
@@ -372,7 +372,7 @@ app.post("/op/:opNum", async (req, res) => {
         const query5 = await connection.promise().query(
           `INSERT INTO Account(Mail, Psw, Abbonamento, DataCreaz) 
            VALUES ("famiglia@fam.com","12345678","mensile","2025-01-01"), ("stevesting@random.com","ciaociao","annuale","2022-10-01"), ("giuse@gg.com", "123stella","annuale","2020-08-23")`);
-        res.send(query5);
+        res.json({ out: query5 });
         break;
 
       case "6":
@@ -382,39 +382,41 @@ app.post("/op/:opNum", async (req, res) => {
            SET Abbonamento = 'annuale PRO'
            WHERE Mail = 'famiglia@fam.com'`
         );
-        res.send(query6);
+        res.json({ out: query6 });
         break;
 
       case "7":
         //rimozione account
         await connection.promise().query(`DELETE FROM Account WHERE Mail = 'giuse@gg.com' `);
+        res.json({ out: 'query 7 done' });
         break;
 
       case "8":
         //inserimento utente
         //to check
-          let users = userTest[0].getArr().concat(userTest[1].getArr()).concat(userTest[2].getArr()).concat(userTest[3].getArr());
+        let users = userTest[0].getArr().concat(userTest[1].getArr()).concat(userTest[2].getArr()).concat(userTest[3].getArr());
         const query8 = await connection.promise().query(
           `INSERT INTO Utente(Nome, Account, Eta, Posizione, Ling, Dispositivo, TempoUtilizzo) VALUES (?, ?, ?, ?, ?, ?, ?), (?, ?, ?, ?, ?, ?, ?), (?, ?, ?, ?, ?, ?, ?), (?, ?, ?, ?, ?, ?, ?)`,
-            users
+          users
         )
+        res.json({ out: query8 });
         break;
 
       case "9":
         //top 10 di sempre
-        await connection.promise().query(
+        const query9 = await connection.promise().query(
           `SELECT Id, Titolo, Tipo
           FROM ProdCinema
           ORDER BY COUNT(Visual) DESC
           LIMIT 10`
 
         );
-
+        res.json({ out: query9 });
         break;
 
       case "10":
         //top 10 mensile
-        await connection.promise().query(
+        const query10 = await connection.promise().query(
           `SELECT P.Id, P.Titolo, P.Tipo
           FROM ProdCinema as P JOIN Visione as V on 
           P.Id = V.ProdCinema
@@ -424,16 +426,19 @@ app.post("/op/:opNum", async (req, res) => {
           ORDER BY COUNT(V.ProdCinema) DESC
           LIMIT 10 `
         );
+        res.json({ out: query10 });
         break;
 
       case "11":
         //consigliati
-        await connection.promise().query(`SELECT P.Id, P.Titolo, P.Tipo FROM Visione as V JOIN ProdCinema as P ON V.ProdCin = P.Id JOIN (SELECT P.Genere as FavGen FROM Visione as V JOIN ProdCinema as P ON V.ProdCin = P.Id WHERE	V.Utente = 'Federica' AND V.Account = 'famiglia@fam.com' GROUP BY P.Genere ORDER BY COUNT(*) DESC LIMIT 1) t ON P.Genere = t.FavGen LIMIT 5 `,);
+        const query11 = await connection.promise().query(`SELECT P.Id, P.Titolo, P.Tipo FROM Visione as V JOIN ProdCinema as P ON V.ProdCin = P.Id JOIN (SELECT P.Genere as FavGen FROM Visione as V JOIN ProdCinema as P ON V.ProdCin = P.Id WHERE	V.Utente = 'Federica' AND V.Account = 'famiglia@fam.com' GROUP BY P.Genere ORDER BY COUNT(*) DESC LIMIT 1) t ON P.Genere = t.FavGen LIMIT 5 `,);
+        res.json({ out: query11 });
         break;
 
       case "12":
         //ricerca prodotto
-      await connection.promise().query(`SELECT Id, Titolo, Tipo FROM ProdCinema WHERE Titolo = 'Interstellar'`);
+        const query12 = await connection.promise().query(`SELECT Id, Titolo, Tipo FROM ProdCinema WHERE Titolo = 'Interstellar'`);
+        res.json({ out: query12 });
         break;
 
       case "13":
@@ -441,21 +446,17 @@ app.post("/op/:opNum", async (req, res) => {
         let id_prod = rees[0]?.Id;
 
         await connection.promise().query(`INSERT INTO Visione(Utente, Account, ProdCinema, Watchtime, Data) VALUES ('Federica', 'famiglia@fam.com', ${id_prod}, 10100, '2024-01-10') `);
+        res.json({ out: 'query 13 done' });
         break;
 
       case "14":
-        //inserimento recensione
-        const query14 = await connection.promise().query(
-          `INSERT INTO Recensione(Utente, Account, ProdCinema, Gradimento) 
-            VALUES (?, ?, ?, ?) `,
-          [
-            req.body.utente,
-            req.body.account,
-            req.body.prodCinema,
-            req.body.gradimento,
-          ]
-        );
-        res.send(query14);
+        {
+          //inserimento recensione
+          const [res] = await connection.promise().query(`SELECT Id FROM ProdCinema where Titolo = 'Interstellar'`)
+          let id_prod = rees[0]?.Id;
+          const query14 = await connection.promise().query(`INSERT INTO Recensione(Utente, Account, ProdCinema, Gradimento) VALUES ('Federica', 'famiglia@fam.com', ${id_prod}, 9)`);
+          res.json({ out: query14 });
+        }
         break;
 
       case "15":
@@ -474,7 +475,7 @@ app.post("/op/:opNum", async (req, res) => {
         return;
     }
 
-    res.json({ success: true });
+    // res.json({ success: true });
   } catch (e) {
     console.error(e);
     res.status(500).json({ error: "Errore durante l'esecuzione della query" });
