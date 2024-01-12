@@ -1,5 +1,5 @@
 module.exports.DBcredentials = {
-    host: '93.65.85.208',
+    host: '188.216.164.106',
     //host: '192.168.1.5',
     database: 'riverflix',
     user: 'uprova',
