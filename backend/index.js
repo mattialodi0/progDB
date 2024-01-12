@@ -134,7 +134,7 @@ app.post("/clearTables", async (req, res) => {
 });
 
 
-
+// errori: 4, 10
 app.post("/op/:opNum", async (req, res) => {
   let connection = await connect.getConnection();
   const { opNum } = req.params;
@@ -175,115 +175,129 @@ app.post("/op/:opNum", async (req, res) => {
         break;
 
       case "2":
-        //rimozione prodotto
-        const query2 = await connection.promise().query(
-          `DELETE FROM ProdCinema 
-            WHERE Scadenza < CAST(GETDATE() AS Date)`
-        );
-        res.json({ out: query2 });
+        {
+          //rimozione prodotto
+          const [query2] = await connection.promise().query(
+            `DELETE FROM ProdCinema 
+             WHERE Scadenza < CAST(NOW() AS Date)`
+          );
+          res.json({ out: query2 });
+        }
         break;
 
       case "3":
-        //aggiornamento prodotto
-        let query3 = await connection.promise().query(`UPDATE ProdCinema SET Scadenza = '2025-01-01 WHERE  Titolo = 'Interstellar'`);
-        res.json({ out: query3 });
+        {
+          //aggiornamento prodotto
+          let [query3] = await connection.promise().query(`UPDATE ProdCinema SET Scadenza = '2025-01-01' WHERE  Titolo = 'Interstellar'`);
+          res.json({ out: query3 });
+        }
         break;
 
       case "4":
-        //aggiornamento rating
-        const query4 = await connection.promise().query(
-          `UPDATE ProdCinema 
-            SET Rating = t.meanR 
-            FROM 
-              (SELECT ProdCinema, AVG(ProdCinema) as meanR 
-              FROM Recensione 
-              GROUP BY ProdCinema
-            ) t 
-            WHERE Id = t.ProdCinema `
-        );
-        res.json({ out: query4 });
+        {
+          //aggiornamento rating
+          const [query4] = await connection.promise().query(`UPDATE ProdCinema SET Rating = t.meanR FROM (SELECT ProdCinema, AVG(ProdCinema) as meanR FROM Recensione GROUP BY ProdCinema) t WHERE Id = t.ProdCinema `);
+          res.json({ out: query4 });
+        }
         break;
 
       case "5":
-        //inserimento account
-        const query5 = await connection.promise().query(
-          `INSERT INTO Account(Mail, Psw, Abbonamento, DataCreaz) 
+        {
+          //inserimento account
+          const [query5] = await connection.promise().query(
+            `INSERT INTO Account(Mail, Password, Abbonamento, DataCreaz) 
            VALUES ("famiglia@fam.com","12345678","mensile","2025-01-01"), ("stevesting@random.com","ciaociao","annuale","2022-10-01"), ("giuse@gg.com", "123stella","annuale","2020-08-23")`);
-        res.json({ out: query5 });
+          res.json({ out: query5 });
+        }
         break;
 
       case "6":
-        //cambio abbonamento
-        const query6 = await connection.promise().query(
-          `UPDATE Account 
+        {
+          //cambio abbonamento
+          const [query6] = await connection.promise().query(
+            `UPDATE Account 
            SET Abbonamento = 'annuale PRO'
            WHERE Mail = 'famiglia@fam.com'`
-        );
-        res.json({ out: query6 });
+          );
+          res.json({ out: query6 });
+        }
         break;
 
       case "7":
-        //rimozione account
-        await connection.promise().query(`DELETE FROM Account WHERE Mail = 'giuse@gg.com'`);
-        res.json({ out: 'query 7 done' });
+        {
+          //rimozione account
+          const [query7] = await connection.promise().query(`DELETE FROM Account WHERE Mail = 'giuse@gg.com'`);
+          res.json({ out: query7 });
+        }
         break;
 
       case "8":
-        //inserimento utente
-        const query8 = await connection.promise().query(
-          `INSERT INTO Utente(Nome, Account, Eta, Posizione, Ling, Dispositivo, TempoUtilizzo) 
-          VALUES ("Marco", "famiglia@fam.com", 28, "Roma", "italiano", "Laptop Dell XPS"),
-                 ("Federica", "famiglia@fam.com", 25, "Roma", "italiano", "Laptop Dell XPS"),
-                 ("Giuseppe", "giuse@gg.com", 44, "Bologna", "italiano", "Lenovo ThinkPad X1"),
-                 ("Steve", "stevesting@random.com", 23, "NewYork", "americano", "MacBook Air")`
-        );
-        res.json({ out: query8 });
+        {
+          //inserimento utente
+          const [query8] = await connection.promise().query(
+            'INSERT INTO Utente(Nome, Account, Eta, Posizione, Ling, Dispositivo, TempoUtilizzo) ' +
+            'VALUES ("Marco", "famiglia@fam.com", 28, "Roma", "italiano", "Laptop Dell XPS", 0), ' +
+            '("Federica", "famiglia@fam.com", 25, "Roma", "italiano", "Laptop Dell XPS", 0), ' +
+            '("Giuseppe", "giuse@gg.com", 44, "Bologna", "italiano", "Lenovo ThinkPad X1", 0), ' +
+            '("Steve", "stevesting@random.com", 23, "NewYork", "americano", "MacBook Air", 0)'
+          );
+          res.json({ out: query8 });
+        }
         break;
 
       case "9":
-        //top 10 di sempre
-        const query9 = await connection.promise().query(
-          `SELECT Id, Titolo, Tipo
+        {
+          //top 10 di sempre
+          const [query9] = await connection.promise().query(
+            `SELECT Id, Titolo, Tipo
           FROM ProdCinema
           ORDER BY COUNT(Visual) DESC
           LIMIT 10`
-        );
-        res.json({ out: query9 });
+          );
+          res.json({ out: query9 });
+        }
         break;
 
       case "10":
-        //top 10 mensile
-        const query10 = await connection.promise().query(
-          `SELECT P.Id, P.Titolo, P.Tipo
-          FROM ProdCinema as P JOIN Visione as V on 
-          P.Id = V.ProdCinema
-          WHERE V.Data > DATE_ADD((CAST(GETDATE() AS Date) INTERVAL -1
-          MONTH)
-          GROUP BY V.ProdCinema
-          ORDER BY COUNT(V.ProdCinema) DESC
-          LIMIT 10 `
-        );
-        res.json({ out: query10 });
+        {
+          //top 10 mensile
+          const query10 = await connection.promise().query(
+            'SELECT P.Id, P.Titolo, P.Tipo ' +
+            'FROM ProdCinema as P JOIN Visione as V on  ' +
+            'P.Id = V.ProdCinema ' +
+            'WHERE V.Data > DATE_ADD((CAST(NOW() AS Date) INTERVAL -1 MONTH) ' +
+            'GROUP BY V.ProdCinema ' +
+            'ORDER BY COUNT(V.ProdCinema) DESC ' +
+            'LIMIT 10'
+          );
+          res.json({ out: query10 });
+        }
         break;
 
       case "11":
-        //consigliati
-        let [query11] = await connection.promise().query(`SELECT P.Id, P.Titolo, P.Tipo FROM Visione as V JOIN ProdCinema as P ON V.ProdCinema = P.Id JOIN Categoria as C ON P.Id = C.ProdCinema JOIN (SELECT C.genere as FavGen FROM Visione as V JOIN Categoria as C ON V.ProdCinema = C.ProdCinema WHERE V.Utente = 'Federica' AND V.Account = 'famiglia@fam.com' GROUP BY C.Genere ORDER BY COUNT(*) DESC LIMIT 1) t ON C.Genere = t.FavGen LIMIT 5`);
-        res.json({ out: query11 });
+        {
+          //consigliati
+          let [query11] = await connection.promise().query(`SELECT P.Id, P.Titolo, P.Tipo FROM Visione as V JOIN ProdCinema as P ON V.ProdCinema = P.Id JOIN Categoria as C ON P.Id = C.ProdCinema JOIN (SELECT C.genere as FavGen FROM Visione as V JOIN Categoria as C ON V.ProdCinema = C.ProdCinema WHERE V.Utente = 'Federica' AND V.Account = 'famiglia@fam.com' GROUP BY C.Genere ORDER BY COUNT(*) DESC LIMIT 1) t ON C.Genere = t.FavGen LIMIT 5`);
+          res.json({ out: query11 });
+        }
         break;
 
       case "12":
-        //ricerca prodotto
-        const query12 = await connection.promise().query(`SELECT Id, Titolo, Tipo FROM ProdCinema WHERE Titolo = 'Interstellar'`);
-        res.json({ out: query12 });
+        {
+          //ricerca prodotto
+          const query12 = await connection.promise().query(`SELECT Id, Titolo, Tipo FROM ProdCinema WHERE Titolo = 'Interstellar'`);
+          res.json({ out: query12 });
+        }
         break;
 
       case "13":
-        const [rees] = await connection.promise().query(`SELECT Id FROM ProdCinema where Titolo = 'Interstellar'`)
-        let id_prod = rees[0]?.Id;
-
-        await connection.promise().query(`INSERT INTO Visione(Utente, Account, ProdCinema, Watchtime, Data) VALUES ('Federica', 'famiglia@fam.com', ${id_prod}, 10100, '2024-01-10') `);
-        res.json({ out: 'query 13 done' });
+        {
+          const query13 = await connection.promise().query(`SELECT Id FROM ProdCinema where Titolo = 'Interstellar'`)
+          let id_prod = rees[0]?.Id;
+          
+          await connection.promise().query(`INSERT INTO Visione(Utente, Account, ProdCinema, Watchtime, Data) VALUES ('Federica', 'famiglia@fam.com', ${id_prod}, 10100, '2024-01-10') `);
+          res.json({ out: query13 });
+        }
         break;
 
       case "14":

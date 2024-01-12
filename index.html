@@ -29,7 +29,6 @@
 	async function submit1() {
 		let res = await fetch(server + '/op/1', { method:'POST'});
 		res = await res.json();
-
 		if(res.out) document.querySelector('#output').innerHTML = JSON.stringify(res.out, null, 4);
 	}
 	async function submit2() {
@@ -48,7 +47,7 @@
 		if(res.out) document.querySelector('#output').innerHTML = JSON.stringify(res.out, null, 4);
 	}
 	async function submit5() {
-		const res = await fetch(server + '/op/5', { method:'POST'});
+		let res = await fetch(server + '/op/5', { method:'POST'});
 		res = await res.json();
 		if(res.out) document.querySelector('#output').innerHTML = JSON.stringify(res.out, null, 4);
 	}
@@ -211,8 +210,7 @@
 			s="p-2 m-2">
 				<h3 class="mx-auto my-2 font-semibold text-xl">Inserimento utente</h3>
 				<pre class="my-2">	Query:
-	INSERT INTO Utente (Nome, Account, Età, Posizione, Ling,
-	Disp, TempoUtilizzo)
+	INSERT INTO Utente (Nome, Account, Età, Posizione, Ling, Disp, TempoUtilizzo)
 	VALUES (...)</pre>
 				<button class="py-1 px-2 m-2 border-2 rounded-md" onclick="submit8()">esegui</button>
 			</li>
