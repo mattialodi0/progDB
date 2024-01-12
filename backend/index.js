@@ -72,20 +72,19 @@ class connection {
 
 const connect = new connection();
 
-// app.get("/table/:tablename", async (req, res) => {
-//   const { tablename } = req.params;
-//   try {
-//     let conn = await connect.getConnection();
-//     let query = `SELECT * FROM ${tablename} WHERE 1`;
+app.get("/table/:tablename", async (req, res) => {
+  const { tablename } = req.params;
+  try {
+    let conn = await connect.getConnection();
 
-//     const [results] = await conn.query(query);
+    const [results] = await conn.promise().query(`SELECT * FROM ${tablename} WHERE 1`);
 
-//     return results;
-//   } catch (e) {
-//     console.log(e);
-//     res.status(400).json(e);
-//   }
-// });
+    res.json(results);
+  } catch (e) {
+    console.log(e);
+    res.status(400).json(e);
+  }
+});
 
 app.post("/createTables", async (req, res) => {
   try {
