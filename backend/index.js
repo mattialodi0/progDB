@@ -171,10 +171,8 @@ app.post("/op/:opNum", async (req, res) => {
           const [query1_6] = await connection.promise().query(
             `INSERT INTO Ambientazione(ProdCinema, Location) VALUES (${prod_id}, 'Giove')`);
 
-          /*  
-          const [query1_7] = await connection.promise().query(
-            `INSERT INTO SerieTV(Id, Titolo, NStagioni) VALUES ('3', 'Pilot', '9')`);
-          */  
+          await connection.promise().query(`INSERT INTO SerieTV(Id, Titolo, NStagioni) VALUES (3, 'Pilot', '9')`);
+          
             res.json({ out: { 'ProdCinema': query1_1, 'Personale': query1_2, 'Creazione': query1_3, 'Parte': query1_4, 'Categoria': query1_5, 'Ambientazione': query1_6 } });
         }
         break;
