@@ -1,0 +1,16 @@
+[
+    {
+    "Codice": "Attore1",
+    "Nome": "Francesco",
+    "DataNasc": "1988-06-17T22:00:00.000Z",
+    "Nazionalità": "americano",
+    "Compito": "Attore"
+    },
+    {
+    "Codice": "Regista1",
+    "Nome": "Nolan",
+    "DataNasc": "1978-10-07T23:00:00.000Z",
+    "Nazionalità": "francese",
+    "Compito": "Regista"
+    }
+]

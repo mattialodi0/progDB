@@ -1,0 +1,20 @@
+[
+    {
+    "Mail": "famiglia@fam.com",
+    "Password": "12345678",
+    "Abbonamento": "mensile",
+    "DataCreaz": "2024-12-31T23:00:00.000Z"
+    },
+    {
+    "Mail": "giuse@gg.com",
+    "Password": "123stella",
+    "Abbonamento": "annuale",
+    "DataCreaz": "2020-08-22T22:00:00.000Z"
+    },
+    {
+    "Mail": "stevesting@random.com",
+    "Password": "ciaociao",
+    "Abbonamento": "annuale",
+    "DataCreaz": "2022-09-30T22:00:00.000Z"
+    }
+]

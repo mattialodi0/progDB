@@ -1,0 +1,38 @@
+[
+    {
+    "Nome": "Federica",
+    "Account": "famiglia@fam.com",
+    "Eta": 25,
+    "Posizione": "Roma",
+    "Ling": "italiano",
+    "Dispositivo": "Laptop Dell XPS",
+    "TempoUtilizzo": 0
+    },
+    {
+    "Nome": "Giuseppe",
+    "Account": "giuse@gg.com",
+    "Eta": 44,
+    "Posizione": "Bologna",
+    "Ling": "italiano",
+    "Dispositivo": "Lenovo ThinkPad X1",
+    "TempoUtilizzo": 0
+    },
+    {
+    "Nome": "Marco",
+    "Account": "famiglia@fam.com",
+    "Eta": 28,
+    "Posizione": "Roma",
+    "Ling": "italiano",
+    "Dispositivo": "Laptop Dell XPS",
+    "TempoUtilizzo": 0
+    },
+    {
+    "Nome": "Steve",
+    "Account": "stevesting@random.com",
+    "Eta": 23,
+    "Posizione": "NewYork",
+    "Ling": "americano",
+    "Dispositivo": "MacBook Air",
+    "TempoUtilizzo": 0
+    }
+]
