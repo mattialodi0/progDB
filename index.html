@@ -228,9 +228,9 @@
 				<h3 class="mx-auto my-2 font-semibold text-xl">Ricerca top 10 mensile</h3>
 				<pre class="my-2">	Query:
 	SELECT P.Id, P.Titolo, P.Tipo
-	FROM ProdCinema as P JOIN Visione as V on 
-	P.Id = V.ProdCinema
-	WHERE V.Data > DATE_ADD((CAST(NOW() AS Date) INTERVAL -1 MONTH))
+	FROM ProdCinema as P
+		JOIN Visione as V ON P.Id = V.ProdCinema
+	WHERE V.Data > DATE_ADD(CURDATE(), INTERVAL -1 MONTH)
 	GROUP BY V.ProdCinema
 	ORDER BY COUNT(V.ProdCinema) DESC
 	LIMIT 10</pre>

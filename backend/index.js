@@ -152,7 +152,7 @@ app.post("/op/:opNum", async (req, res) => {
           let prod_id = query1_1.insertId;
 
           // popoliamo il database
-          await connection.promise().query(`INSERT INTO ProdCinema(Id, Rating, Durata, Budget, Anno, Titolo, CARA, Scadenza, Tipo, Stagione, SerieTV, NumEpisodio) VALUES (null, 0, 10140,165000000,2013,"Interstellar","PG",null,"film",null,null,null), (null, 0, 1320, 2000000, 2005, "Pilot", 'PG', null, 'serie_tv', 1, null, 1), (null, 0, 1320,2000000,2005,"Purple Giraffe", 'PG' ,null, 'serie_tv' ,1,null,2), (null, 0, 1320,2000000,2005,"Sweet Taste of Liberty", 'PG', null, 'serie_tv',1,null,3)`);
+          await connection.promise().query(`INSERT INTO ProdCinema(Id, Rating, Durata, Budget, Anno, Titolo, CARA, Scadenza, Tipo, Stagione, SerieTV, NumEpisodio) VALUES (null, 0, 8040,80000000,2014,"Fury","PG","2024-01-01","film",null,null,null), (null, 0, 1320, 2000000, 2005, "Pilot", 'PG', null, 'serie_tv', 1, null, 1), (null, 0, 1320,2000000,2005,"Purple Giraffe", 'PG' ,null, 'serie_tv' ,1,null,2), (null, 0, 1320,2000000,2005,"Sweet Taste of Liberty", 'PG', null, 'serie_tv',1,null,3)`);
 
 
           // inserimento personale
@@ -271,14 +271,14 @@ app.post("/op/:opNum", async (req, res) => {
       case "10":
         {
           //top 10 mensile
-          const query10 = await connection.promise().query(
-            'SELECT P.Id, P.Titolo, P.Tipo ' +
-            'FROM ProdCinema as P JOIN Visione as V on  ' +
-            'P.Id = V.ProdCinema ' +
-            'WHERE V.Data > DATE_ADD((CAST(NOW() AS Date) INTERVAL -1 MONTH) ' +
-            'GROUP BY V.ProdCinema ' +
-            'ORDER BY COUNT(V.ProdCinema) DESC ' +
-            'LIMIT 10'
+          const [query10] = await connection.promise().query(
+            `SELECT P.Id, P.Titolo, P.Tipo
+            FROM ProdCinema as P
+            JOIN Visione as V ON P.Id = V.ProdCinema
+            WHERE V.Data > DATE_ADD(CURDATE(), INTERVAL -1 MONTH)
+            GROUP BY V.ProdCinema
+            ORDER BY COUNT(V.ProdCinema) DESC
+            LIMIT 10`
           );
           res.json({ out: query10 });
         }
@@ -339,8 +339,8 @@ app.post("/op/:opNum", async (req, res) => {
 
     // res.json({ success: true });
   } catch (e) {
-    console.error(e);
-    res.status(500).json({ error: "Errore durante l'esecuzione della query" });
+    console.error(String(e).slice(0,100));
+    res.status(500).json({ out: "Errore durante l'esecuzione della query" });
   }
 });
 
