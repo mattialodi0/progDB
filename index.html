@@ -14,87 +14,93 @@
 	async function createDB() {
 		let res = await fetch(server + '/createTables', { method:'POST'});
 		res = await res.json();
-		if(res?.out) document.querySelector('#output').innerText = res.out;
+		if(res.out) document.querySelector('#output').innerHTML = JSON.stringify(res.out, null, 4);
 	}
 	async function deleteDB() {
 		let res = await fetch(server + '/deleteTables', { method:'POST'});
 		res = await res.json();
-		if(res?.out) document.querySelector('#output').innerText = res.out;
+		if(res.out) document.querySelector('#output').innerHTML = JSON.stringify(res.out, null, 4);
+	}
+	async function clearDB() {
+		let res = await fetch(server + '/clearTables', { method:'POST'});
+		res = await res.json();
+		if(res.out) document.querySelector('#output').innerHTML = JSON.stringify(res.out, null, 4);
 	}
 	async function submit1() {
-		const res = await fetch(server + '/op/1', { method:'POST'});
+		let res = await fetch(server + '/op/1', { method:'POST'});
 		res = await res.json();
-		if(res?.out) document.querySelector('#output').innerText = res.out;
+
+		if(res.out) document.querySelector('#output').innerHTML = JSON.stringify(res.out, null, 4);
 	}
 	async function submit2() {
-		const res = await fetch(server + '/op/2', { method:'POST'});
+		let res = await fetch(server + '/op/2', { method:'POST'});
 		res = await res.json();
-		if(res?.out) document.querySelector('#output').innerText = res.out;
+		if(res.out) document.querySelector('#output').innerHTML = JSON.stringify(res.out, null, 4);
 	}
 	async function submit3() {
-		const res = await fetch(server + '/op/3', { method:'POST'});
+		let res = await fetch(server + '/op/3', { method:'POST'});
 		res = await res.json();
-		if(res?.out) document.querySelector('#output').innerText = res.out;
+		if(res.out) document.querySelector('#output').innerHTML = JSON.stringify(res.out, null, 4);
 	}
 	async function submit4() {
-		const res = await fetch(server + '/op/4', { method:'POST'});
+		let res = await fetch(server + '/op/4', { method:'POST'});
 		res = await res.json();
-		if(res?.out) document.querySelector('#output').innerText = res.out;
+		if(res.out) document.querySelector('#output').innerHTML = JSON.stringify(res.out, null, 4);
 	}
 	async function submit5() {
 		const res = await fetch(server + '/op/5', { method:'POST'});
 		res = await res.json();
-		if(res?.out) document.querySelector('#output').innerText = res.out;
+		if(res.out) document.querySelector('#output').innerHTML = JSON.stringify(res.out, null, 4);
 	}
 	async function submit6() {
-		const res = await fetch(server + '/op/6', { method:'POST'});
+		let res = await fetch(server + '/op/6', { method:'POST'});
 		res = await res.json();
-		if(res?.out) document.querySelector('#output').innerText = res.out;
+		if(res.out) document.querySelector('#output').innerHTML = JSON.stringify(res.out, null, 4);
 	}
 	async function submit7() {
-		const res = await fetch(server + '/op/7', { method:'POST'});
+		let res = await fetch(server + '/op/7', { method:'POST'});
 		res = await res.json();
-		if(res?.out) document.querySelector('#output').innerText = res.out;
+		if(res.out) document.querySelector('#output').innerHTML = JSON.stringify(res.out, null, 4);
 	}
 	async function submit8() {
-		const res = await fetch(server + '/op/8', { method:'POST'});
+		let res = await fetch(server + '/op/8', { method:'POST'});
 		res = await res.json();
-		if(res?.out) document.querySelector('#output').innerText = res.out;
+		if(res.out) document.querySelector('#output').innerHTML = JSON.stringify(res.out, null, 4);
 	}
 	async function submit9() {
-		const res = await fetch(server + '/op/9', { method:'POST'});
+		let res = await fetch(server + '/op/9', { method:'POST'});
 		res = await res.json();
-		if(res?.out) document.querySelector('#output').innerText = res.out;
+		if(res.out) document.querySelector('#output').innerHTML = JSON.stringify(res.out, null, 4);
 	}
 	async function submit10() {
-		const res = await fetch(server + '/op/10', { method:'POST'});
+		let res = await fetch(server + '/op/10', { method:'POST'});
 		res = await res.json();
-		if(res?.out) document.querySelector('#output').innerText = res.out;
+		if(res.out) document.querySelector('#output').innerHTML = JSON.stringify(res.out, null, 4);
 	}
 	async function submit11() {
-		const res = await fetch(server + '/op/11', { method:'POST'});
+		let res = await fetch(server + '/op/11', { method:'POST'});
 		res = await res.json();
-		if(res?.out) document.querySelector('#output').innerText = res.out;
+		if(res.out) document.querySelector('#output').innerHTML = JSON.stringify(res.out, null, 4);
 	}
 	async function submit12() {
-		const res = await fetch(server + '/op/12', { method:'POST'});
+		let res = await fetch(server + '/op/12', { method:'POST'});
 		res = await res.json();
-		if(res?.out) document.querySelector('#output').innerText = res.out;
+		if(res.out) document.querySelector('#output').innerHTML = JSON.stringify(res.out, null, 4);
 	}
 	async function submit13() {
-		const res = await fetch(server + '/op/13', { method:'POST'});
+		let res = await fetch(server + '/op/13', { method:'POST'});
 		res = await res.json();
-		if(res?.out) document.querySelector('#output').innerText = res.out;
+		if(res.out) document.querySelector('#output').innerHTML = JSON.stringify(res.out, null, 4);
 	}
 	async function submit14() {
-		const res = await fetch(server + '/op/14', { method:'POST'});
+		let res = await fetch(server + '/op/14', { method:'POST'});
 		res = await res.json();
-		if(res?.out) document.querySelector('#output').innerText = res.out;
+		if(res.out) document.querySelector('#output').innerHTML = JSON.stringify(res.out, null, 4);
 	}
 	async function submit15() {
-		const res = await fetch(server + '/op/15', { method:'POST'});
+		let res = await fetch(server + '/op/15', { method:'POST'});
 		res = await res.json();
-		if(res?.out) document.querySelector('#output').innerText = res.out;
+		if(res.out) document.querySelector('#output').innerHTML = JSON.stringify(res.out, null, 4);
 	}
 </script>
 
@@ -111,6 +117,10 @@
 		<div class="p-2 m-2">
 				<h3 class="mx-auto my-2 font-semibold text-xl">Rimozione delle tabelle</h3>
 				<button id="creteDB" class="py-1 px-2 m-2 border-2 rounded-md" onclick="deleteDB()">esegui</button>
+		</div>
+		<div class="p-2 m-2">
+				<h3 class="mx-auto my-2 font-semibold text-xl">Rimozione delle relazioni</h3>
+				<button id="creteDB" class="py-1 px-2 m-2 border-2 rounded-md" onclick="clearDB()">esegui</button>
 		</div>
 
 
@@ -152,7 +162,7 @@
 				<h3 class="mx-auto my-2 font-semibold text-xl">Aggiornamento prodotto</h3>
 				<pre class="my-2">Query:
 	UPDATE ProdCinema 
-	SET Scadenza = '2025-01-01 
+	SET Scadenza = '2025-01-01' 
 	WHERE  Titolo = 'Interstellar'</pre>
 				<button class="py-1 px-2 m-2 border-2 rounded-md" onclick="submit3()">esegui</button>
 			</li>
@@ -287,9 +297,9 @@
 
 		<h2 class="mx-auto my-4 text-3xl font-semibold">Output:</h2>
 		
-		<div id="output" class="mx-8 p-4 bg-gray-200">
+		<pre id="output" class="mx-8 p-4 bg-gray-200">
 			
-		</div>
+		</pre>
 	</main>
 </body>
 </html>

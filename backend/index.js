@@ -108,11 +108,25 @@ app.post("/deleteTables", async (req, res) => {
   try {
     let conn = await connect.getConnection();
 
-    for (let table_name of TABLES_NAME) {
-      await conn.promise().query(`DROP TABLE IF EXISTS DaVedere, InVisione, Visione, Recensione, Parte, Creazione, Categoria, Ambientazione, Utente, Account, Personale, ProdCinema, SerieTV`);
-    }
+    await conn.promise().query(`DROP TABLE IF EXISTS DaVedere, InVisione, Visione, Recensione, Parte, Creazione, Categoria, Ambientazione, Utente, Account, Personale, ProdCinema, SerieTV`);
 
     res.json({ out: "Schemi rimossi" });
+  } catch (err) {
+    console.log(err);
+    res.status(400).json(err);
+  }
+});
+
+app.post("/clearTables", async (req, res) => {
+  try {
+    let conn = await connect.getConnection();
+
+    await conn.promise().query(`DROP TABLE IF EXISTS DaVedere, InVisione, Visione, Recensione, Parte, Creazione, Categoria, Ambientazione, Utente, Account, Personale, ProdCinema, SerieTV`);
+    for (let query of CREATE_QUERIES) {
+      let result = await conn.promise().query(query);
+    }
+
+    res.json({ out: "Relazioni rimosse" });
   } catch (err) {
     console.log(err);
     res.status(400).json(err);
@@ -129,33 +143,35 @@ app.post("/op/:opNum", async (req, res) => {
 
     switch (opNum) {
       case "1":
-        //inserimento prodotto
+        {
+          //inserimento prodotto
 
-        const [query1_1] = await connection.promise().query(
-          `INSERT INTO ProdCinema(Id, Rating, Durata, Budget, Anno, Titolo, CARA, Scadenza, Tipo, Stagione, SerieTV, NumEpisodio ) VALUES (NULL,0, 10140,165000000,2013,"Interstellar","PG",null,"film",null,null,null)`);
+          const [query1_1] = await connection.promise().query(
+            `INSERT INTO ProdCinema(Id, Rating, Durata, Budget, Anno, Titolo, CARA, Scadenza, Tipo, Stagione, SerieTV, NumEpisodio ) VALUES (NULL,0, 10140,165000000,2013,"Interstellar","PG",null,"film",null,null,null)`);
 
-        let prod_id = query1_1.insertId;
+          let prod_id = query1_1.insertId;
 
-        await connection.promise().query(`INSERT INTO ProdCinema(Id, Rating, Durata, Budget, Anno, Titolo, CARA, Scadenza, Tipo, Stagione, SerieTV, NumEpisodio) VALUES (null, 0, 10140,165000000,2013,"Interstellar","PG",null,"film",null,null,null), (null, 0, 1320, 2000000, 2005, "Pilot", 'PG', null, 'serie_tv', 1, null, 1), (null, 0, 1320,2000000,2005,"Purple Giraffe", 'PG' ,null, 'serie_tv' ,1,null,2), (null, 0, 1320,2000000,2005,"Sweet Taste of Liberty", 'PG', null, 'serie_tv',1,null,3)`);
+          await connection.promise().query(`INSERT INTO ProdCinema(Id, Rating, Durata, Budget, Anno, Titolo, CARA, Scadenza, Tipo, Stagione, SerieTV, NumEpisodio) VALUES (null, 0, 10140,165000000,2013,"Interstellar","PG",null,"film",null,null,null), (null, 0, 1320, 2000000, 2005, "Pilot", 'PG', null, 'serie_tv', 1, null, 1), (null, 0, 1320,2000000,2005,"Purple Giraffe", 'PG' ,null, 'serie_tv' ,1,null,2), (null, 0, 1320,2000000,2005,"Sweet Taste of Liberty", 'PG', null, 'serie_tv',1,null,3)`);
 
-        // inserimento personale
-        await connection.promise().query(
-          `INSERT INTO Personale(Codice, Nome, DataNasc, Nazionalità, Compito) VALUES ("Regista1","Nolan","1978-10-08","francese","Regista"), ("Attore1","Francesco","1988-06-18","americano","Attore")`);
+          // inserimento personale
+          const [query1_2] = await connection.promise().query(
+            `INSERT INTO Personale(Codice, Nome, DataNasc, Nazionalità, Compito) VALUES ("Regista1","Nolan","1978-10-08","francese","Regista"), ("Attore1","Francesco","1988-06-18","americano","Attore")`);
 
-        //inserimento nella relazione
-        const [query1_3] = await connection.promise().query(
-          `INSERT INTO Creazione(ProdCinema, Personale) VALUES (${prod_id}, 'Regista1'), (${prod_id}, 'Attore1')`);
+          //inserimento nella relazione
+          const [query1_3] = await connection.promise().query(
+            `INSERT INTO Creazione(ProdCinema, Personale) VALUES (${prod_id}, 'Regista1'), (${prod_id}, 'Attore1')`);
 
-        const [query1_4] = await connection.promise().query(
-          `INSERT INTO Parte(ProdCinema, Attore, Ruolo) VALUES (${prod_id}, 'Attore1', 'Cane') `);
+          const [query1_4] = await connection.promise().query(
+            `INSERT INTO Parte(ProdCinema, Attore, Ruolo) VALUES (${prod_id}, 'Attore1', 'Cane') `);
 
-        const [query1_5] = await connection.promise().query(
-          `INSERT INTO Categoria(ProdCinema, Genere) VALUES (${prod_id}, 'Commedia') `);
+          const [query1_5] = await connection.promise().query(
+            `INSERT INTO Categoria(ProdCinema, Genere) VALUES (${prod_id}, 'Commedia') `);
 
-        const [query1_6] = await connection.promise().query(
-          `INSERT INTO Ambientazione(ProdCinema, Location) VALUES (${prod_id}, 'Giove')`);
+          const [query1_6] = await connection.promise().query(
+            `INSERT INTO Ambientazione(ProdCinema, Location) VALUES (${prod_id}, 'Giove')`);
 
-        res.json({ out: {'ProdCinema':query1_1, 'Personale': query1_2, 'Creazione': query1_3, 'Parte':query1_4, 'Categoria': query1_5, 'Ambientazione': query1_6}});
+          res.json({ out: { 'ProdCinema': query1_1, 'Personale': query1_2, 'Creazione': query1_3, 'Parte': query1_4, 'Categoria': query1_5, 'Ambientazione': query1_6 } });
+        }
         break;
 
       case "2":
@@ -252,7 +268,7 @@ app.post("/op/:opNum", async (req, res) => {
 
       case "11":
         //consigliati
-        let [query11] = await connection.promise().query(`SELECT P.Id, P.Titolo, P.Tipo FROM Visione as V JOIN ProdCinema as P ON V.ProdCinema = P.Id JOIN Categoria as C ON P.Id = C.ProdCinema JOIN (SELECT C.genere as FavGen FROM Visione as V JOIN Categoria as C ON V.ProdCinema = C.ProdCinema WHERE V.Utente = 'Federica' AND V.Account = 'famiglia@fam.com' GROUP BY C.Genere ORDER BY COUNT(*) DESC LIMIT 1) t ON C.Genere = t.FavGen LIMIT 5` );
+        let [query11] = await connection.promise().query(`SELECT P.Id, P.Titolo, P.Tipo FROM Visione as V JOIN ProdCinema as P ON V.ProdCinema = P.Id JOIN Categoria as C ON P.Id = C.ProdCinema JOIN (SELECT C.genere as FavGen FROM Visione as V JOIN Categoria as C ON V.ProdCinema = C.ProdCinema WHERE V.Utente = 'Federica' AND V.Account = 'famiglia@fam.com' GROUP BY C.Genere ORDER BY COUNT(*) DESC LIMIT 1) t ON C.Genere = t.FavGen LIMIT 5`);
         res.json({ out: query11 });
         break;
 
