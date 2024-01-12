@@ -153,7 +153,7 @@
 				<h3 class="mx-auto my-2 font-semibold text-xl">Rimozione prodotto</h3>
 				<pre class="my-2">Query:
 	DELETE FROM ProdCinema 
-	WHERE Scadenza &lt; CAST(GETDATE() AS Date)</pre>
+	WHERE Scadenza &lt; CAST(NOW() AS Date)</pre>
 				<button class="py-1 px-2 m-2 border-2 rounded-md" onclick="submit2()">esegui</button>
 			</li>
 
@@ -169,13 +169,12 @@
 			<li class="p-2 m-2">
 				<h3 class="mx-auto my-2 font-semibold text-xl">Aggiornamento rating</h3>
 				<pre class="my-2">Query:
-	UPDATE ProdCinema
-	SET Rating = t.meanR
-	FROM (
-		SELECT ProdCinema, AVG(ProdCinema) as meanR
-		FROM Recensione 
+	UPDATE ProdCinema, (
+		SELECT ProdCinema, AVG(Gradimento) as meanR
+		FROM Recensione
 		GROUP BY ProdCinema
 	) t
+	SET Rating = t.meanR
 	WHERE Id = t.ProdCinema</pre>
 				<button class="py-1 px-2 m-2 border-2 rounded-md" onclick="submit4()">esegui</button>
 			</li>
@@ -231,7 +230,7 @@
 	SELECT P.Id, P.Titolo, P.Tipo
 	FROM ProdCinema as P JOIN Visione as V on 
 	P.Id = V.ProdCinema
-	WHERE V.Data > DATE_ADD((CAST(GETDATE() AS Date) INTERVAL -1 MONTH))
+	WHERE V.Data > DATE_ADD((CAST(NOW() AS Date) INTERVAL -1 MONTH))
 	GROUP BY V.ProdCinema
 	ORDER BY COUNT(V.ProdCinema) DESC
 	LIMIT 10</pre>
@@ -295,9 +294,14 @@
 
 		<h2 class="mx-auto my-4 text-3xl font-semibold">Output:</h2>
 		
-		<pre id="output" class="mx-8 p-4 bg-gray-200">
+		
+		<pre id="output" class="mx-8 p-4 bg-gray-200" style="font-family: monospace;">
 			
 		</pre>
 	</main>
 </body>
 </html>
+
+
+<!-- Alcune query sono state lievemente modificate rispetto a quelle presenti nella relazione per addattarle 
+	dalla sintassi standard a quella di MySQL -->

@@ -151,7 +151,9 @@ app.post("/op/:opNum", async (req, res) => {
 
           let prod_id = query1_1.insertId;
 
+          // popoliamo il database
           await connection.promise().query(`INSERT INTO ProdCinema(Id, Rating, Durata, Budget, Anno, Titolo, CARA, Scadenza, Tipo, Stagione, SerieTV, NumEpisodio) VALUES (null, 0, 10140,165000000,2013,"Interstellar","PG",null,"film",null,null,null), (null, 0, 1320, 2000000, 2005, "Pilot", 'PG', null, 'serie_tv', 1, null, 1), (null, 0, 1320,2000000,2005,"Purple Giraffe", 'PG' ,null, 'serie_tv' ,1,null,2), (null, 0, 1320,2000000,2005,"Sweet Taste of Liberty", 'PG', null, 'serie_tv',1,null,3)`);
+
 
           // inserimento personale
           const [query1_2] = await connection.promise().query(
@@ -196,7 +198,15 @@ app.post("/op/:opNum", async (req, res) => {
       case "4":
         {
           //aggiornamento rating
-          const [query4] = await connection.promise().query(`UPDATE ProdCinema SET Rating = t.meanR FROM (SELECT ProdCinema, AVG(ProdCinema) as meanR FROM Recensione GROUP BY ProdCinema) t WHERE Id = t.ProdCinema `);
+          const [query4] = await connection.promise().query(
+            'UPDATE ProdCinema, ('+
+              'SELECT ProdCinema, AVG(Gradimento) as meanR '+ 
+              'FROM Recensione '+
+              'GROUP BY ProdCinema '+
+            ') t '+
+            'SET Rating = t.meanR '+
+            'WHERE Id = t.ProdCinema'
+          );
           res.json({ out: query4 });
         }
         break;
@@ -285,17 +295,17 @@ app.post("/op/:opNum", async (req, res) => {
       case "12":
         {
           //ricerca prodotto
-          const query12 = await connection.promise().query(`SELECT Id, Titolo, Tipo FROM ProdCinema WHERE Titolo = 'Interstellar'`);
+          const [query12] = await connection.promise().query(`SELECT Id, Titolo, Tipo FROM ProdCinema WHERE Titolo = 'Interstellar'`);
           res.json({ out: query12 });
         }
         break;
 
       case "13":
         {
-          const query13 = await connection.promise().query(`SELECT Id FROM ProdCinema where Titolo = 'Interstellar'`)
+          const [rees] = await connection.promise().query(`SELECT Id FROM ProdCinema where Titolo = 'Interstellar'`)
           let id_prod = rees[0]?.Id;
-          
-          await connection.promise().query(`INSERT INTO Visione(Utente, Account, ProdCinema, Watchtime, Data) VALUES ('Federica', 'famiglia@fam.com', ${id_prod}, 10100, '2024-01-10') `);
+
+          const [query13] = await connection.promise().query(`INSERT INTO Visione(Utente, Account, ProdCinema, Watchtime, Data) VALUES ('Federica', 'famiglia@fam.com', ${id_prod}, 10100, '2024-01-10') `);
           res.json({ out: query13 });
         }
         break;
@@ -303,22 +313,23 @@ app.post("/op/:opNum", async (req, res) => {
       case "14":
         {
           //inserimento recensione
-          const [res] = await connection.promise().query(`SELECT Id FROM ProdCinema where Titolo = 'Interstellar'`)
+          const [rees] = await connection.promise().query(`SELECT Id FROM ProdCinema where Titolo = 'Interstellar'`)
           let id_prod = rees[0]?.Id;
-          const query14 = await connection.promise().query(`INSERT INTO Recensione(Utente, Account, ProdCinema, Gradimento) VALUES ('Federica', 'famiglia@fam.com', ${id_prod}, 9)`);
+          const [query14] = await connection.promise().query(`INSERT INTO Recensione(Utente, Account, ProdCinema, Gradimento) VALUES ('Federica', 'famiglia@fam.com', ${id_prod}, 9)`);
           res.json({ out: query14 });
         }
         break;
 
       case "15":
-        //ricerca info
-        //uso l'id
-        const query15 = await connection.promise().query(
-          `SELECT Rating, Durata, Budget, Anno, CARA, Stagione, SerieTV, Visual 
-           FROM ProdCinema 
-           WHERE Titolo = 'Interstellar'`,
-        );
-        res.json({ out: query15 });
+        {
+          //ricerca info
+          const [query15] = await connection.promise().query(
+            `SELECT Rating, Durata, Budget, Anno, CARA, Stagione, SerieTV, Visual 
+          FROM ProdCinema 
+          WHERE Titolo = 'Interstellar'`,
+          );
+          res.json({ out: query15 });
+        }
         break;
 
       default:
